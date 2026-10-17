@@ -1,57 +1,87 @@
-import { firebaseConfig, firebaseVersion, isFirebaseConfigured } from './firebase-config.js';
+import {
+  browserLocalPersistence,
+  getAuth,
+  onAuthStateChanged,
+  sendPasswordResetEmail,
+  setPersistence,
+  signInWithEmailAndPassword,
+  signOut as firebaseSignOut
+} from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+import {
+  doc,
+  getDoc,
+  getFirestore
+} from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
+import { app } from "./firebase-config.js";
 
-let sdkPromise;
-let authPromise;
+export const auth = getAuth(app);
+export const db = getFirestore(app);
 
-async function loadFirebaseSdk() {
-  if (!isFirebaseConfigured) {
-    throw new Error('Firebase aún no está configurado. Completa firebase-config.js en la fase de autenticación.');
-  }
-  if (!sdkPromise) {
-    const cdnBase = `https://www.gstatic.com/firebasejs/${firebaseVersion}`;
-    sdkPromise = Promise.all([
-      import(`${cdnBase}/firebase-app.js`),
-      import(`${cdnBase}/firebase-auth.js`)
-    ]).catch((error) => {
-      sdkPromise = undefined;
-      throw error;
-    });
-  }
-  return sdkPromise;
-}
+const VALID_ROLES = new Set(["docente", "director", "subdirectora"]);
+let persistencePromise;
 
-async function getAuthContext() {
-  if (!authPromise) {
-    authPromise = (async () => {
-      const [appSdk, authSdk] = await loadFirebaseSdk();
-      const app = appSdk.getApps().length ? appSdk.getApp() : appSdk.initializeApp(firebaseConfig);
-      return { auth: authSdk.getAuth(app), authSdk };
-    })().catch((error) => {
-      authPromise = undefined;
-      throw error;
-    });
+function ensurePersistence() {
+  if (!persistencePromise) {
+    persistencePromise = setPersistence(auth, browserLocalPersistence);
   }
-  return authPromise;
+  return persistencePromise;
 }
 
 export async function signIn(email, password) {
-  const { auth, authSdk } = await getAuthContext();
-  const credential = await authSdk.signInWithEmailAndPassword(auth, email.trim(), password);
-  return credential.user;
+  await ensurePersistence();
+  return signInWithEmailAndPassword(auth, email.trim(), password);
+}
+
+export async function requestPasswordReset(email) {
+  await ensurePersistence();
+  return sendPasswordResetEmail(auth, email.trim());
 }
 
 export async function signOut() {
-  const { auth, authSdk } = await getAuthContext();
-  await authSdk.signOut(auth);
+  await firebaseSignOut(auth);
 }
 
-export async function observeAuthState(callback) {
-  if (typeof callback !== 'function') throw new TypeError('callback debe ser una función.');
-  const { auth, authSdk } = await getAuthContext();
-  return authSdk.onAuthStateChanged(auth, callback);
+export async function waitForAuthState() {
+  await ensurePersistence();
+  return new Promise((resolve, reject) => {
+    let unsubscribe = () => {};
+    unsubscribe = onAuthStateChanged(
+      auth,
+      (user) => {
+        unsubscribe();
+        resolve(user);
+      },
+      (error) => {
+        unsubscribe();
+        reject(error);
+      }
+    );
+  });
 }
 
-export async function getCurrentUser() {
-  const { auth } = await getAuthContext();
-  return auth.currentUser;
+export async function getUserProfile(uid) {
+  if (!uid) return null;
+  const snapshot = await getDoc(doc(db, "users", uid));
+  return snapshot.exists() ? { ...snapshot.data(), uid: snapshot.id } : null;
+}
+
+export function isActiveProfile(profile) {
+  return Boolean(
+    profile
+    && profile.active === true
+    && VALID_ROLES.has(profile.role)
+    && typeof profile.displayName === "string"
+    && profile.displayName.trim().length > 0
+    && profile.displayName === profile.displayName.trim()
+    && profile.displayName.length <= 80
+  );
+}
+
+export function roleLabel(role) {
+  const labels = {
+    docente: "Docente",
+    director: "Dirección · Director",
+    subdirectora: "Dirección · Subdirectora"
+  };
+  return labels[role] || "Perfil sin asignar";
 }

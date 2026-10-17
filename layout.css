@@ -162,7 +162,8 @@
 @media (max-width: 430px) {
   .shell { width: calc(100% - 24px); }
   .brand__text small { display: none; }
-  .user-chip { display: none; }
+  .user-chip__text { display: none; }
+  .sign-out-button { min-height: 30px; padding: 5px 8px; font-size: 10px; }
   .nav-link { padding-inline: 10px; }
   .page-heading h1 { font-size: 27px; }
   .welcome-card { padding: 24px 19px; }

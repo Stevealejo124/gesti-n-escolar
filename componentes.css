@@ -188,3 +188,70 @@
   .event-tag { grid-column: 2; justify-self: start; }
   .privacy-note { align-items: flex-start; }
 }
+
+/* Fase 2: acceso autenticado, guardas y registros de supervisión. */
+.auth-main { min-height: calc(100vh - 153px); display: grid; grid-template-columns: minmax(0, 0.95fr) minmax(320px, 0.9fr); align-items: center; gap: clamp(28px, 5vw, 68px); padding-top: 42px; padding-bottom: 48px; }
+.auth-card { width: 100%; max-width: 470px; margin-inline: auto; padding: 34px; border: 1px solid var(--color-line); border-radius: 20px; background: #fff; box-shadow: var(--shadow-card); }
+.auth-card__intro { margin-bottom: 24px; }
+.auth-card__intro .badge { margin-bottom: 18px; }
+.auth-card__intro h1 { margin-bottom: 9px; font-size: 32px; letter-spacing: -0.04em; }
+.auth-card__intro > p:last-child { color: var(--color-muted); font-size: 13px; }
+.auth-form { display: grid; gap: 15px; }
+.auth-field { display: grid; gap: 7px; }
+.auth-field > span { color: #526176; font-size: 12px; font-weight: 700; }
+.auth-field input { width: 100%; min-height: 46px; padding: 11px 12px; border: 1px solid #d8e0e8; border-radius: 10px; color: var(--color-ink); background: #fff; font-size: 13px; }
+.auth-field input::placeholder { color: #9aa5b3; }
+.button--full { width: 100%; min-height: 46px; margin-top: 3px; }
+.button:disabled, .auth-reset:disabled { opacity: .62; cursor: wait; transform: none; }
+.auth-reset { justify-self: center; padding: 3px 8px; border: 0; color: var(--color-blue); background: transparent; cursor: pointer; font-size: 12px; font-weight: 700; }
+.auth-reset:hover { text-decoration: underline; }
+.auth-message { padding: 11px 12px; border: 1px solid #d8e3ef; border-radius: 10px; color: var(--color-blue-deep); background: #f3f7fb; font-size: 12px; }
+.auth-message[data-state="error"] { border-color: #f0d0cb; color: #8d342d; background: #fff3f1; }
+.auth-message[data-state="success"] { border-color: #cde4d7; color: #246b50; background: #edf8f1; }
+.auth-message[data-state="info"] { border-color: #d8e3ef; color: var(--color-blue-deep); background: #f3f7fb; }
+.auth-card__footnote { display: flex; align-items: flex-start; gap: 10px; margin-top: 21px; padding-top: 17px; border-top: 1px solid #edf0f3; }
+.auth-card__footnote-icon { display: grid; place-items: center; width: 22px; height: 22px; flex: 0 0 auto; border-radius: 50%; color: var(--color-ochre); background: #fbf0d7; font-family: Georgia, serif; font-weight: 700; }
+.auth-card__footnote p { color: var(--color-muted); font-size: 11px; }
+.auth-aside { padding: 31px 34px; border: 1px solid rgba(245,205,108,.55); border-radius: 22px; color: #fff; background: linear-gradient(145deg, #1e3d63, #315b83); box-shadow: 0 16px 38px rgba(30,61,99,.14); }
+.auth-aside__illustration { display: grid; place-items: center; min-height: 205px; margin-bottom: 14px; }
+.auth-aside__illustration svg { width: min(100%, 295px); }
+.auth-aside .eyebrow { color: var(--color-yellow); }
+.auth-aside h2 { max-width: 420px; margin-bottom: 9px; color: #fff; font-size: 25px; letter-spacing: -.03em; }
+.auth-aside > p:not(.eyebrow) { color: rgba(255,255,255,.78); font-size: 13px; }
+.auth-aside__points { display: grid; gap: 9px; margin-top: 21px; }
+.auth-aside__points span { display: flex; align-items: center; gap: 9px; color: rgba(255,255,255,.92); font-size: 12px; }
+.auth-aside__points b { display: grid; place-items: center; width: 19px; height: 19px; border-radius: 50%; color: var(--color-blue-deep); background: var(--color-yellow); font-size: 11px; }
+.auth-aside__small { margin-top: 22px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,.17); color: rgba(255,255,255,.65) !important; font-size: 10px !important; }
+
+.auth-gate { display: flex; align-items: flex-start; gap: 13px; margin-top: 34px; margin-bottom: 8px; padding: 18px 20px; border: 1px solid #d9e3ed; border-radius: 14px; background: #fff; box-shadow: var(--shadow-card); }
+.auth-gate__spinner { width: 18px; height: 18px; flex: 0 0 auto; margin-top: 2px; border: 2px solid #dbe4ed; border-top-color: var(--color-blue); border-radius: 50%; animation: auth-spin .8s linear infinite; }
+.auth-gate strong { display: block; margin-bottom: 3px; font-size: 13px; }
+.auth-gate p { color: var(--color-muted); font-size: 12px; }
+.auth-gate__link { display: inline-block; margin-top: 9px; color: var(--color-blue); font-size: 12px; font-weight: 700; text-decoration: underline; }
+@keyframes auth-spin { to { transform: rotate(360deg); } }
+.sign-out-button { margin-left: 1px; white-space: nowrap; }
+
+.activity-log-panel { margin-top: 18px; padding: 18px 0 0; border-top: 1px solid var(--color-line); }
+.activity-log-panel__header { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 10px; }
+.activity-log-panel__header .eyebrow { margin-bottom: 4px; }
+.activity-log-panel__header h3 { margin: 0; font-size: 15px; }
+.activity-log-state { margin-bottom: 9px; color: var(--color-muted); font-size: 11px; }
+.activity-log-list { display: grid; gap: 7px; margin: 0; padding: 0; list-style: none; }
+.activity-log-item { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 10px 12px; border: 1px solid #edf0f3; border-radius: 10px; background: #fcfdfe; }
+.activity-log-item strong, .activity-log-item span { display: block; }
+.activity-log-item strong { color: var(--color-ink); font-size: 11px; }
+.activity-log-item span, .activity-log-item time { color: var(--color-muted); font-size: 10px; }
+.activity-log-item time { flex: 0 0 auto; text-align: right; }
+
+@media (max-width: 800px) {
+  .auth-main { grid-template-columns: minmax(0, 1fr); max-width: 650px; gap: 20px; }
+  .auth-aside { display: none; }
+}
+@media (max-width: 540px) {
+  .auth-main { min-height: auto; padding-top: 25px; padding-bottom: 32px; }
+  .auth-card { padding: 24px 19px; border-radius: 16px; }
+  .auth-card__intro h1 { font-size: 28px; }
+  .auth-gate { margin-top: 20px; padding: 15px; }
+  .activity-log-item { align-items: flex-start; flex-direction: column; gap: 5px; }
+  .activity-log-item time { text-align: left; }
+}

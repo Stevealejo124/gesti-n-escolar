@@ -1,16 +1,16 @@
-/*
- * Configuración pública de Firebase para el navegador.
- * Completar únicamente al iniciar la fase de autenticación.
- * Estos valores identifican el proyecto; las reglas de Firebase son las que protegen los datos.
- */
-export const firebaseVersion = '10.12.5';
+import { getApps, initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
 
-export const firebaseConfig = Object.freeze({
-  apiKey: '',
-  authDomain: '',
-  projectId: '',
-  appId: ''
-});
+// Configuración web del proyecto. El API key identifica la app; la seguridad real se aplica con Auth y reglas de Firestore.
+const firebaseConfig = {
+  apiKey: "AIzaSyAGrt5FBRECP2hgtwAT9d2DgvOJ3TIxM5o",
+  authDomain: "gestion-escolar-9f588.firebaseapp.com",
+  projectId: "gestion-escolar-9f588",
+  storageBucket: "gestion-escolar-9f588.firebasestorage.app",
+  messagingSenderId: "595225650447",
+  appId: "1:595225650447:web:6b9cc2205a304a63778a7a",
+  measurementId: "G-V3KS0S0MH9"
+};
 
-export const isFirebaseConfigured = ['apiKey', 'authDomain', 'projectId', 'appId']
-  .every((key) => typeof firebaseConfig[key] === 'string' && firebaseConfig[key].trim() !== '');
+export { firebaseConfig };
+export const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+// No se importa ni inicializa Firebase Analytics.

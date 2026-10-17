@@ -1,0 +1,56 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function userPath(uid) {
+      return /databases/$(database)/documents/users/$(uid);
+    }
+
+    function hasProfile() {
+      return signedIn() && exists(userPath(request.auth.uid));
+    }
+
+    function activeProfile() {
+      return hasProfile() && get(userPath(request.auth.uid)).data.active == true;
+    }
+
+    function isSupervisor() {
+      return activeProfile()
+        && get(userPath(request.auth.uid)).data.role in ['director', 'subdirectora'];
+    }
+
+    match /users/{uid} {
+      // Cada persona puede leer su propio perfil; dirección puede consultar perfiles para supervisar.
+      allow get: if (signedIn() && request.auth.uid == uid) || isSupervisor();
+      allow list: if isSupervisor();
+      // Roles y perfiles se provisionan desde Firebase Console o un entorno administrativo confiable.
+      allow create, update, delete: if false;
+    }
+
+    match /activityLogs/{logId} {
+      allow create: if activeProfile()
+        && request.resource.data.keys().hasAll(['actorUid', 'actorName', 'type', 'section', 'createdAt'])
+        && request.resource.data.keys().hasOnly(['actorUid', 'actorName', 'type', 'section', 'createdAt'])
+        && request.resource.data.actorUid == request.auth.uid
+        && request.resource.data.actorName is string
+        && request.resource.data.actorName == get(userPath(request.auth.uid)).data.displayName
+        && request.resource.data.actorName.size() <= 80
+        && request.resource.data.type in ['login', 'logout', 'page_view']
+        && request.resource.data.section in ['index', 'aportes', 'notas', 'horarios', 'fichas']
+        && request.resource.data.createdAt == request.time;
+
+      // Dirección/subdirección ve actividad general; el resto solo sus propios registros.
+      allow get, list: if isSupervisor()
+        || (activeProfile() && resource.data.actorUid == request.auth.uid);
+      allow update, delete: if false;
+    }
+
+    // Denegación por defecto para notas, fichas, reportes y cualquier colección no definida.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

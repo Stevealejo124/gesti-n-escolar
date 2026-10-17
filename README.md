@@ -1,14 +1,12 @@
-# Gestión Escolar — Fase 1 (estructura plana)
+# Gestión Escolar — Fase 2 (estructura plana)
 
-Prototipo estático multiarchivo: HTML5, CSS3 y JavaScript vanilla. **Todos los archivos de la web están en la raíz, sin subcarpetas.** No hay frameworks, npm, bundler ni paso de compilación.
-
-> La entrega es una demo de interfaz. Firebase, Google Sheets, autenticación, guardado real y sincronización todavía no están configurados. No cargues nombres, calificaciones, reportes ni otros datos reales de estudiantes.
+Sitio estático en HTML5, CSS3 y JavaScript vanilla, con módulos ES y Firebase Web SDK **v13.0.0 desde las CDN oficiales**. Todos los archivos del sitio viven en la raíz; no hay carpetas `css/`, `js/` o `assets/`, ni npm, framework o build step.
 
 ## Archivos
 
 ```text
 /
-├── index.html
+├── index.html                 (login email/contraseña)
 ├── aportes.html
 ├── notas.html
 ├── horarios.html
@@ -17,15 +15,17 @@ Prototipo estático multiarchivo: HTML5, CSS3 y JavaScript vanilla. **Todos los 
 ├── layout.css
 ├── componentes.css
 ├── nav.js
+├── login.js
+├── guard.js
+├── auth.js
+├── firebase-config.js
+├── logs.js
 ├── offline.js
 ├── sheets.js
-├── firebase-config.js
-├── auth.js
 ├── aportes.js
 ├── notas.js
 ├── horarios.js
 ├── fichas.js
-├── logs.js
 ├── logo.svg
 ├── icono-aportes.svg
 ├── icono-notas.svg
@@ -35,39 +35,58 @@ Prototipo estático multiarchivo: HTML5, CSS3 y JavaScript vanilla. **Todos los 
 ├── icon-512.png
 ├── manifest.json
 ├── sw.js
+├── firestore.rules
 └── README.md
 ```
 
-Todas las referencias internas empiezan con `./`, así que sirven tanto en el dominio raíz como en una dirección de GitHub Pages del tipo `usuario.github.io/repositorio/`.
+Las referencias internas usan rutas relativas `./archivo`; son compatibles con un dominio en la raíz y con GitHub Pages bajo `/nombre-del-repositorio/`.
 
-## Subir todo con GitHub web — un solo “Upload files”
+## Subir los archivos con GitHub web
 
-1. Descarga y **descomprime** el paquete ZIP de esta entrega en tu computadora.
-2. Abre la carpeta `gestion-escolar-plano` que se creó al extraerlo. Selecciona **todos los archivos que están dentro** (no la carpeta contenedora ni un ZIP) y cópialos/arrástralos juntos.
-3. En GitHub, abre el repositorio donde publicarás el sitio. Si el repositorio aún no existe, créalo primero.
-4. Pulsa **Add file → Upload files**. Arrastra o selecciona en una sola operación todos los archivos de la carpeta plana. Comprueba que GitHub muestre los archivos directamente en la raíz, sin directorios `css/`, `js/` o `assets/`.
-5. Escribe un mensaje, por ejemplo `Publicar prototipo Fase 1`, y pulsa **Commit changes**.
-6. Abre **Settings → Pages**. En **Build and deployment**, selecciona **Deploy from a branch**, elige la rama (por ejemplo `main`) y la carpeta **/(root)**; pulsa **Save**.
-7. Espera la publicación y abre la URL que indique GitHub Pages. Para volver a subir cambios, repite **Add file → Upload files** con los archivos actualizados.
+1. Descarga y descomprime el paquete de la Fase 2 en tu computadora.
+2. Abre la carpeta plana del proyecto y selecciona todos los archivos que están dentro. No selecciones la carpeta contenedora ni subas el ZIP sin extraer.
+3. En el repositorio de GitHub, pulsa **Add file → Upload files** y arrastra/selecciona todos los archivos juntos.
+4. Comprueba que estén directamente en la raíz del repositorio y no dentro de una subcarpeta. Pulsa **Commit changes**.
+5. En **Settings → Pages**, elige **Deploy from a branch**, selecciona la rama publicada y **/(root)**. Pulsa **Save**.
+6. Espera a que Pages publique y abre la URL que muestra GitHub.
 
-**No subas el ZIP como un archivo único:** GitHub Pages no lo descomprime. Hay que extraerlo y subir los archivos que contiene. El README también forma parte de la carga.
+Para probar localmente, sirve la carpeta por HTTP, por ejemplo `python -m http.server 8000`; no abras `index.html` como `file://`. Auth y Firestore necesitan conexión a internet.
 
-## Prueba local opcional
+## Preparación obligatoria en Firebase Console
 
-Desde la carpeta plana, sirve los archivos con un servidor HTTP local; por ejemplo:
+La configuración web del proyecto ya está escrita en `firebase-config.js`, con los valores indicados. El campo `measurementId` se conserva en el objeto de configuración, pero **no se importa ni inicializa Firebase Analytics**. El API key web no es una contraseña; la protección se aplica con autenticación y reglas.
 
-```bash
-python -m http.server 8000
-```
+1. En **Authentication → Sign-in method**, habilita **Email/Password**.
+2. En **Authentication → Settings → Authorized domains**, agrega el host que te asigne GitHub Pages (por ejemplo `tu-organizacion.github.io`) y el dominio propio, si se usa.
+3. Crea la base de datos de **Cloud Firestore**.
+4. En **Firestore → Rules**, copia el contenido de `firestore.rules` y pulsa **Publish**. GitHub Pages no despliega reglas de Firebase automáticamente.
+5. Crea cada cuenta en **Authentication → Users → Add user**. No hay registro público en el sitio.
+6. Copia el UID de cada cuenta y crea en Firestore el documento `users/{UID}` con estos campos:
 
-Abre `http://localhost:8000`. No uses `file://`: los módulos ES y el Service Worker requieren HTTP(S). En producción, Pages utiliza HTTPS y permite el Service Worker.
+   ```json
+   {
+     "displayName": "Nombre del personal",
+     "email": "persona@institucion.edu.sv",
+     "role": "docente",
+     "active": true
+   }
+   ```
 
-## Incluido en esta fase
+   Valores permitidos para `role`: `docente`, `director` o `subdirectora`. El documento debe tener `displayName` no vacío y `active: true`. El perfil y los roles solo se modifican desde una herramienta administrativa confiable/Console; el cliente web no puede escribirlos.
 
-- Navegación entre las cuatro pestañas y estilos responsive.
-- Filtros y búsqueda de demostración, promedio de notas ilustrativo y controles de vistas del calendario.
-- Manifest PWA e iconos; Service Worker con caché de archivos estáticos para uso offline básico.
-- Esqueleto de cola IndexedDB y módulos de integración pendientes.
-- Firebase Web SDK 10.12.5 con imports CDN diferidos; no se conecta hasta completar la configuración.
+## Qué queda implementado
 
-Antes de usar datos reales aún hay que configurar Firebase, roles, reglas de acceso, privacidad local, autorización de cambios, Apps Script y el contrato de sincronización. La apariencia de botones o perfiles en el navegador **no** protege datos: los permisos deben validarse en Firebase/backend.
+- Inicio y cierre de sesión mediante Firebase Authentication con correo y contraseña; formulario de restablecimiento de contraseña.
+- Guardas en las cuatro páginas: requieren sesión y perfil Firestore activo. Si Firebase o Firestore no pueden validar el perfil, el contenido protegido permanece oculto.
+- Permisos de interfaz por rol. `horarios.html` queda limitado a `docente`; dirección y subdirección pueden consultar las demás secciones.
+- Perfiles en `users/{uid}` y registro de acciones en `activityLogs/{id}`. El registro incluye actor, tipo, sección y hora de servidor. Dirección/subdirección ve la actividad general dentro de Fichas; cada docente solo puede leer la propia.
+- Reglas con denegación por defecto para cualquier colección no definida. Las funciones de notas, fichas y reportes aún muestran contenido ficticio y no escriben esos datos en Firestore.
+- Los eventos de actividad pueden quedar en IndexedDB si se pierde la conexión y se intentan enviar al reconectar. La autenticación y la consulta de perfiles requieren conexión a Firebase; el sitio falla de forma cerrada y no muestra contenido protegido si no puede validar permisos.
+
+## Límites de seguridad
+
+- Las guardas y la navegación del navegador son controles de experiencia de usuario, no la frontera de seguridad. Firestore Rules aplica los permisos del perfil.
+- Los perfiles de personal se provisionan manualmente; no existe una pantalla para asignar roles ni crear cuentas.
+- El log se crea desde el cliente y se hace inmutable para el cliente según Rules, pero un usuario con herramientas de navegador puede intentar emitir acciones permitidas. Para auditoría resistente a manipulación se necesita una función/backend confiable.
+- Todavía no se almacenan calificaciones, reportes ni fichas en Firestore. Antes de habilitarlos, define esquema, permisos por docente/grupo, cierres de período, autorizaciones y protección de datos locales.
+- El Service Worker guarda solo el shell estático; no cachea documentos privados de Firestore. La cola IndexedDB contiene solo metadatos de actividad (UID, nombre del personal, tipo y sección), queda sin cifrado en ese navegador y puede persistir en equipos compartidos. No introduzcas datos reales durante las pruebas de esta fase.

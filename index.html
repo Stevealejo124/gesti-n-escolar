@@ -4,17 +4,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#1e3d63">
-  <meta name="description" content="Portal institucional para la gestión académica y administrativa escolar.">
-  <title>Portal institucional | Gestión Escolar</title>
+  <meta name="description" content="Acceso institucional al portal de Gestión Escolar.">
+  <title>Iniciar sesión | Gestión Escolar</title>
   <link rel="manifest" href="./manifest.json">
   <link rel="icon" href="./logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="./base.css">
   <link rel="stylesheet" href="./layout.css">
   <link rel="stylesheet" href="./componentes.css">
 </head>
-<body data-page="home">
+<body data-page="login">
   <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
-  <header class="site-header">
+  <header class="site-header auth-header">
     <div class="shell site-header__top">
       <a class="brand" href="./index.html" aria-label="Gestión Escolar, inicio">
         <img class="brand__logo" src="./logo.svg" width="44" height="44" alt="">
@@ -25,86 +25,57 @@
           <span class="connection-pill__dot" aria-hidden="true"></span>
           <span data-connection-label>Comprobando conexión</span>
         </div>
-        <div class="user-chip" aria-label="Sesión de demostración">
-          <span class="user-avatar" aria-hidden="true">DE</span>
-          <span class="user-chip__text"><strong>Demo escolar</strong><small>Vista de demostración</small></span>
-        </div>
+        <span class="badge badge--blue">Acceso seguro</span>
       </div>
     </div>
-    <nav class="primary-nav" aria-label="Navegación principal">
-      <div class="shell primary-nav__inner">
-        <a class="nav-link" data-nav="aportes" href="./aportes.html"><img src="./icono-aportes.svg" alt="" width="19" height="19"><span>Aportes y reportes</span></a>
-        <a class="nav-link" data-nav="notas" href="./notas.html"><img src="./icono-notas.svg" alt="" width="19" height="19"><span>Gestión de notas</span></a>
-        <a class="nav-link" data-nav="horarios" href="./horarios.html"><img src="./icono-horarios.svg" alt="" width="19" height="19"><span>Horarios y agenda</span></a>
-        <a class="nav-link" data-nav="fichas" href="./fichas.html"><img src="./icono-fichas.svg" alt="" width="19" height="19"><span>Fichas estudiantiles</span></a>
-      </div>
-    </nav>
   </header>
 
-  <main class="home-main shell" id="main-content">
-    <section class="welcome-card" aria-labelledby="welcome-title">
-      <div class="welcome-card__main">
-        <span class="badge badge--gold">Prototipo navegable · Fase 1</span>
-        <p class="eyebrow eyebrow--light">PORTAL ACADÉMICO Y ADMINISTRATIVO</p>
-        <h1 id="welcome-title">Una escuela conectada.<br>Una gestión más clara.</h1>
-        <p class="welcome-card__lead">Un espacio institucional para organizar reportes, notas, horarios y el seguimiento académico.</p>
-        <a class="button button--light" href="./aportes.html">Explorar la plataforma <span aria-hidden="true">→</span></a>
-        <p class="welcome-card__fineprint">Esta vista usa contenido de ejemplo. No ingreses información personal ni credenciales reales.</p>
+  <main class="auth-main shell" id="main-content">
+    <section class="auth-card" aria-labelledby="login-title">
+      <div class="auth-card__intro">
+        <span class="badge badge--gold">Portal institucional</span>
+        <p class="eyebrow">GESTIÓN ACADÉMICA Y ADMINISTRATIVA</p>
+        <h1 id="login-title">Inicia sesión</h1>
+        <p>Usa tu cuenta institucional para acceder a las herramientas autorizadas para tu perfil.</p>
       </div>
-      <aside class="welcome-card__side" aria-label="Estado del proyecto">
-        <div class="welcome-illustration" aria-hidden="true">
-          <svg viewBox="0 0 260 190" role="presentation">
-            <circle cx="130" cy="94" r="82" fill="#f5cd6c" opacity=".17"></circle>
-            <path d="M46 45c29-10 56-7 84 9 28-16 55-19 84-9v91c-29-10-56-7-84 9-28-16-55-19-84-9V45Z" fill="#fff" opacity=".96"></path>
-            <path d="M130 54v91M62 66c20-5 38-2 54 7M62 87c20-5 38-2 54 7M62 108c20-5 38-2 54 7M198 66c-20-5-38-2-54 7M198 87c-20-5-38-2-54 7M198 108c-20-5-38-2-54 7" fill="none" stroke="#315b83" stroke-width="5" stroke-linecap="round"></path>
-            <path d="m207 25 5 11 12 2-9 8 2 12-10-6-10 6 2-12-9-8 12-2 5-11Z" fill="#f5cd6c"></path>
-            <circle cx="48" cy="135" r="7" fill="#f5cd6c"></circle>
-            <circle cx="222" cy="143" r="5" fill="#fff" opacity=".8"></circle>
-          </svg>
-        </div>
-        <div class="welcome-card__status">
-          <span class="status-dot status-dot--gold" aria-hidden="true"></span>
-          <div><strong>Base lista para validar</strong><span>Firebase y sincronización se conectarán en fases posteriores.</span></div>
-        </div>
-      </aside>
+
+      <form class="auth-form" data-login-form novalidate>
+        <label class="auth-field" for="login-email">
+          <span>Correo institucional</span>
+          <input id="login-email" name="email" type="email" autocomplete="username" placeholder="nombre@institucion.edu.sv" required>
+        </label>
+        <label class="auth-field" for="login-password">
+          <span>Contraseña</span>
+          <input id="login-password" name="password" type="password" autocomplete="current-password" placeholder="Ingresa tu contraseña" required minlength="6">
+        </label>
+        <button class="button button--primary button--full" type="submit" data-login-submit>Iniciar sesión</button>
+        <button class="auth-reset" type="button" data-password-reset>Olvidé mi contraseña</button>
+        <p class="auth-message" data-login-status role="status" aria-live="polite" hidden></p>
+      </form>
+
+      <div class="auth-card__footnote"><span class="auth-card__footnote-icon" aria-hidden="true">i</span><p>Las cuentas son habilitadas por administración. Si aún no tienes acceso, solicita tu perfil institucional.</p></div>
     </section>
 
-    <section class="quick-section" aria-labelledby="quick-title">
-      <div class="section-heading">
-        <div><p class="eyebrow">ACCESOS PRINCIPALES</p><h2 id="quick-title">¿Qué necesitas consultar?</h2></div>
-        <p>Elige una sección para abrir su vista de demostración.</p>
+    <aside class="auth-aside" aria-label="Información del portal">
+      <div class="auth-aside__illustration" aria-hidden="true">
+        <svg viewBox="0 0 300 230" role="presentation">
+          <circle cx="150" cy="112" r="96" fill="#f5cd6c" opacity=".18"></circle>
+          <path d="M54 68c34-12 67-8 96 11 29-19 62-23 96-11v96c-34-12-67-8-96 11-29-19-62-23-96-11V68Z" fill="#fff"/>
+          <path d="M150 79v96M72 91c24-6 45-3 65 8M72 116c24-6 45-3 65 8M72 141c24-6 45-3 65 8M228 91c-24-6-45-3-65 8M228 116c-24-6-45-3-65 8M228 141c-24-6-45-3-65 8" fill="none" stroke="#315b83" stroke-width="5" stroke-linecap="round"/>
+          <path d="m234 35 6 13 14 2-10 9 3 14-13-7-12 7 2-14-10-9 14-2 6-13Z" fill="#f5cd6c"/>
+          <circle cx="45" cy="161" r="6" fill="#f5cd6c"/>
+        </svg>
       </div>
-      <div class="quick-grid">
-        <a class="quick-card" href="./aportes.html">
-          <span class="quick-card__icon"><img src="./icono-aportes.svg" alt="" width="24" height="24"></span>
-          <span class="quick-card__copy"><strong>Aportes y reportes</strong><span>Actividades, seguimiento y comunicaciones.</span></span>
-          <span class="quick-card__arrow" aria-hidden="true">→</span>
-        </a>
-        <a class="quick-card" href="./notas.html">
-          <span class="quick-card__icon"><img src="./icono-notas.svg" alt="" width="24" height="24"></span>
-          <span class="quick-card__copy"><strong>Gestión de notas</strong><span>Calificaciones y períodos académicos.</span></span>
-          <span class="quick-card__arrow" aria-hidden="true">→</span>
-        </a>
-        <a class="quick-card" href="./horarios.html">
-          <span class="quick-card__icon"><img src="./icono-horarios.svg" alt="" width="24" height="24"></span>
-          <span class="quick-card__copy"><strong>Horarios y agenda</strong><span>Semana docente, reuniones y eventos.</span></span>
-          <span class="quick-card__arrow" aria-hidden="true">→</span>
-        </a>
-        <a class="quick-card" href="./fichas.html">
-          <span class="quick-card__icon"><img src="./icono-fichas.svg" alt="" width="24" height="24"></span>
-          <span class="quick-card__copy"><strong>Fichas estudiantiles</strong><span>Consulta académica en un solo lugar.</span></span>
-          <span class="quick-card__arrow" aria-hidden="true">→</span>
-        </a>
-      </div>
-    </section>
-
-    <section class="home-footnote" aria-label="Alcance de esta fase">
-      <span class="home-footnote__mark" aria-hidden="true">i</span>
-      <div><strong>Alcance de esta fase</strong><p>Se valida diseño, navegación entre páginas y soporte offline básico. Aún no hay inicio de sesión, persistencia de notas ni conexión a Google Sheets.</p></div>
-    </section>
+      <p class="eyebrow eyebrow--light">UN ESPACIO PARA LA COMUNIDAD ESCOLAR</p>
+      <h2>Información organizada. Acceso responsable.</h2>
+      <p>Reportes, notas, horarios y fichas en una plataforma con cuentas y permisos por perfil.</p>
+      <div class="auth-aside__points"><span><b aria-hidden="true">✓</b> Acceso por cuenta institucional</span><span><b aria-hidden="true">✓</b> Perfil activo requerido</span><span><b aria-hidden="true">✓</b> Actividad registrada</span></div>
+      <p class="auth-aside__small">No se ofrece registro público. Las contraseñas se administran en Firebase Authentication.</p>
+    </aside>
   </main>
 
-  <footer class="site-footer"><div class="shell site-footer__inner"><span>Gestión Escolar · Prototipo de interfaz</span><span>Contenido ilustrativo · No usar para datos reales</span></div></footer>
+  <footer class="site-footer"><div class="shell site-footer__inner"><span>Gestión Escolar · Acceso institucional</span><span>Portal en implementación · Fase 2</span></div></footer>
   <script type="module" src="./nav.js"></script>
+  <script type="module" src="./login.js"></script>
 </body>
 </html>

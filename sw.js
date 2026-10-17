@@ -1,5 +1,5 @@
-/* Service Worker plano: cachea la interfaz estática, no endpoints ni datos de personas. */
-const CACHE_NAME = 'gestion-escolar-flat-v1';
+/* Cache offline del shell estático. Firestore, Auth y datos de usuarios no se cachean. */
+const CACHE_NAME = 'gestion-escolar-flat-v2';
 const STATIC_ASSETS = [
   './index.html',
   './aportes.html',
@@ -10,15 +10,17 @@ const STATIC_ASSETS = [
   './layout.css',
   './componentes.css',
   './nav.js',
+  './login.js',
+  './guard.js',
+  './auth.js',
+  './firebase-config.js',
+  './logs.js',
   './offline.js',
   './sheets.js',
-  './firebase-config.js',
-  './auth.js',
   './aportes.js',
   './notas.js',
   './horarios.js',
   './fichas.js',
-  './logs.js',
   './manifest.json',
   './logo.svg',
   './icono-aportes.svg',
@@ -51,7 +53,6 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const request = event.request;
   if (request.method !== 'GET') return;
-
   const requestUrl = new URL(request.url);
   const scopePath = new URL(self.registration.scope).pathname;
   if (requestUrl.origin !== self.location.origin || !requestUrl.pathname.startsWith(scopePath)) return;
@@ -74,7 +75,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Solo recursos estáticos del origen actual; Firebase y cualquier API quedan fuera del caché.
+  // Solo recursos estáticos del mismo origen. No interceptar SDKs, APIs ni documentos privados.
   if (!['style', 'script', 'image', 'manifest', 'font'].includes(request.destination)) return;
   event.respondWith((async () => {
     const cached = await caches.match(request);

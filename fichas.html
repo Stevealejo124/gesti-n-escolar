@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="./layout.css">
   <link rel="stylesheet" href="./componentes.css">
 </head>
-<body data-page="fichas">
+<body data-page="fichas" data-allowed-roles="docente,director,subdirectora">
   <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
   <header class="site-header">
     <div class="shell site-header__top">
@@ -20,7 +20,11 @@
       <div class="site-header__actions">
         <div class="connection-pill" title="Estado de conexión a internet; no indica sincronización con Firebase." aria-live="polite"><span class="connection-pill__dot" aria-hidden="true"></span><span data-connection-label>Comprobando conexión</span></div>
         <span class="pending-count" data-pending-count hidden></span>
-        <div class="user-chip" aria-label="Sesión de demostración"><span class="user-avatar" aria-hidden="true">DE</span><span class="user-chip__text"><strong>Demo escolar</strong><small>Vista de demostración</small></span></div>
+        <div class="user-chip" aria-label="Cuenta autenticada">
+          <span class="user-avatar" aria-hidden="true" data-user-initials>GE</span>
+          <span class="user-chip__text"><strong data-user-name>Verificando sesión…</strong><small data-user-role>Perfil institucional</small></span>
+          <button class="button button--small button--secondary sign-out-button" type="button" data-sign-out hidden>Cerrar sesión</button>
+        </div>
       </div>
     </div>
     <nav class="primary-nav" aria-label="Navegación principal"><div class="shell primary-nav__inner">
@@ -31,7 +35,11 @@
     </div></nav>
   </header>
 
-  <main class="page-main shell" id="main-content">
+    <div class="auth-gate shell" data-auth-gate role="status" aria-live="polite">
+    <span class="auth-gate__spinner" aria-hidden="true"></span>
+    <div><strong data-auth-gate-title>Validando tu sesión…</strong><p data-auth-gate-detail>El contenido permanecerá oculto hasta verificar tu perfil.</p><a class="auth-gate__link" data-auth-gate-link href="./index.html" hidden>Volver al inicio de sesión</a></div>
+  </div>
+  <main class="page-main shell" id="main-content" data-protected-content hidden>
     <section class="page-hero" aria-labelledby="page-title">
       <div class="page-heading"><p class="eyebrow">SEGUIMIENTO ACADÉMICO <span class="eyebrow__divider">/</span> 04</p><h1 id="page-title">Fichas estudiantiles</h1><p class="page-description">Consulta de muestra para reunir historial de notas, seguimiento y avance académico anual.</p></div>
       <button class="button button--secondary" type="button" data-demo-action="La exportación requiere datos autorizados y se implementará al conectar el servicio de datos."><span aria-hidden="true">↓</span> Exportar</button>
@@ -68,12 +76,18 @@
         </table>
       </div>
       <p class="empty-state" data-student-empty hidden>No hay coincidencias. Prueba otro código o cambia el filtro de grado.</p>
-      <div class="privacy-note"><span class="privacy-note__icon" aria-hidden="true">⌑</span><p><strong>Privacidad por diseño.</strong> Antes de cargar información real de estudiantes, se deben configurar autenticación, reglas de acceso y protección de datos locales.</p></div>
+      <div class="privacy-note"><span class="privacy-note__icon" aria-hidden="true">⌑</span><p><strong>Privacidad por diseño.</strong> La ficha detallada requiere reglas de acceso por usuario y grupo; esta maqueta aún muestra solo registros ficticios.</p></div>
+      <section class="activity-log-panel" data-supervisor-activity hidden aria-labelledby="activity-title">
+        <div class="activity-log-panel__header"><div><p class="eyebrow">SUPERVISIÓN</p><h3 id="activity-title">Actividad reciente</h3></div><span class="status-pill status-pill--blue">Solo dirección</span></div>
+        <p class="activity-log-state" data-activity-state role="status" aria-live="polite">Cargando actividad…</p>
+        <ul class="activity-log-list" data-activity-list></ul>
+      </section>
     </section>
   </main>
 
-  <footer class="site-footer"><div class="shell site-footer__inner"><span>Gestión Escolar · Prototipo de interfaz</span><span>Contenido ilustrativo · No usar para datos reales</span></div></footer>
+  <footer class="site-footer"><div class="shell site-footer__inner"><span>Gestión Escolar · Portal institucional</span><span>Contenido ilustrativo · No usar para datos reales</span></div></footer>
   <script type="module" src="./nav.js"></script>
+  <script type="module" src="./guard.js"></script>
   <script type="module" src="./fichas.js"></script>
 </body>
 </html>

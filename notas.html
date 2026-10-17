@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="./layout.css">
   <link rel="stylesheet" href="./componentes.css">
 </head>
-<body data-page="notas">
+<body data-page="notas" data-allowed-roles="docente,director,subdirectora">
   <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
   <header class="site-header">
     <div class="shell site-header__top">
@@ -20,7 +20,11 @@
       <div class="site-header__actions">
         <div class="connection-pill" title="Estado de conexión a internet; no indica sincronización con Firebase." aria-live="polite"><span class="connection-pill__dot" aria-hidden="true"></span><span data-connection-label>Comprobando conexión</span></div>
         <span class="pending-count" data-pending-count hidden></span>
-        <div class="user-chip" aria-label="Sesión de demostración"><span class="user-avatar" aria-hidden="true">DE</span><span class="user-chip__text"><strong>Demo escolar</strong><small>Vista de demostración</small></span></div>
+        <div class="user-chip" aria-label="Cuenta autenticada">
+          <span class="user-avatar" aria-hidden="true" data-user-initials>GE</span>
+          <span class="user-chip__text"><strong data-user-name>Verificando sesión…</strong><small data-user-role>Perfil institucional</small></span>
+          <button class="button button--small button--secondary sign-out-button" type="button" data-sign-out hidden>Cerrar sesión</button>
+        </div>
       </div>
     </div>
     <nav class="primary-nav" aria-label="Navegación principal"><div class="shell primary-nav__inner">
@@ -31,7 +35,11 @@
     </div></nav>
   </header>
 
-  <main class="page-main shell" id="main-content">
+    <div class="auth-gate shell" data-auth-gate role="status" aria-live="polite">
+    <span class="auth-gate__spinner" aria-hidden="true"></span>
+    <div><strong data-auth-gate-title>Validando tu sesión…</strong><p data-auth-gate-detail>El contenido permanecerá oculto hasta verificar tu perfil.</p><a class="auth-gate__link" data-auth-gate-link href="./index.html" hidden>Volver al inicio de sesión</a></div>
+  </div>
+  <main class="page-main shell" id="main-content" data-protected-content hidden>
     <section class="page-hero" aria-labelledby="page-title">
       <div class="page-heading"><p class="eyebrow">GESTIÓN ACADÉMICA <span class="eyebrow__divider">/</span> 02</p><h1 id="page-title">Gestión de notas</h1><p class="page-description">Consulta de calificaciones por grupo y período, con el estado de cierre visible para el personal docente.</p></div>
       <div class="page-actions"><button class="button button--primary" type="button" data-demo-action="El guardado de notas estará disponible cuando se conecte una cuenta docente autorizada.">Guardar borrador</button></div>
@@ -74,8 +82,9 @@
     </section>
   </main>
 
-  <footer class="site-footer"><div class="shell site-footer__inner"><span>Gestión Escolar · Prototipo de interfaz</span><span>Contenido ilustrativo · No usar para datos reales</span></div></footer>
+  <footer class="site-footer"><div class="shell site-footer__inner"><span>Gestión Escolar · Portal institucional</span><span>Contenido ilustrativo · No usar para datos reales</span></div></footer>
   <script type="module" src="./nav.js"></script>
+  <script type="module" src="./guard.js"></script>
   <script type="module" src="./notas.js"></script>
 </body>
 </html>
