@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1e3d63">
+  <meta name="description" content="Consulta de demostración para fichas y seguimiento académico estudiantil.">
+  <title>Fichas estudiantiles | Gestión Escolar</title>
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="./logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./base.css">
+  <link rel="stylesheet" href="./layout.css">
+  <link rel="stylesheet" href="./componentes.css">
+</head>
+<body data-page="fichas">
+  <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+  <header class="site-header">
+    <div class="shell site-header__top">
+      <a class="brand" href="./index.html" aria-label="Gestión Escolar, inicio"><img class="brand__logo" src="./logo.svg" width="44" height="44" alt=""><span class="brand__text"><strong>Gestión Escolar</strong><small>Portal institucional</small></span></a>
+      <div class="site-header__actions">
+        <div class="connection-pill" title="Estado de conexión a internet; no indica sincronización con Firebase." aria-live="polite"><span class="connection-pill__dot" aria-hidden="true"></span><span data-connection-label>Comprobando conexión</span></div>
+        <span class="pending-count" data-pending-count hidden></span>
+        <div class="user-chip" aria-label="Sesión de demostración"><span class="user-avatar" aria-hidden="true">DE</span><span class="user-chip__text"><strong>Demo escolar</strong><small>Vista de demostración</small></span></div>
+      </div>
+    </div>
+    <nav class="primary-nav" aria-label="Navegación principal"><div class="shell primary-nav__inner">
+      <a class="nav-link" data-nav="aportes" href="./aportes.html"><img src="./icono-aportes.svg" alt="" width="19" height="19"><span>Aportes y reportes</span></a>
+      <a class="nav-link" data-nav="notas" href="./notas.html"><img src="./icono-notas.svg" alt="" width="19" height="19"><span>Gestión de notas</span></a>
+      <a class="nav-link" data-nav="horarios" href="./horarios.html"><img src="./icono-horarios.svg" alt="" width="19" height="19"><span>Horarios y agenda</span></a>
+      <a class="nav-link" data-nav="fichas" href="./fichas.html"><img src="./icono-fichas.svg" alt="" width="19" height="19"><span>Fichas estudiantiles</span></a>
+    </div></nav>
+  </header>
+
+  <main class="page-main shell" id="main-content">
+    <section class="page-hero" aria-labelledby="page-title">
+      <div class="page-heading"><p class="eyebrow">SEGUIMIENTO ACADÉMICO <span class="eyebrow__divider">/</span> 04</p><h1 id="page-title">Fichas estudiantiles</h1><p class="page-description">Consulta de muestra para reunir historial de notas, seguimiento y avance académico anual.</p></div>
+      <button class="button button--secondary" type="button" data-demo-action="La exportación requiere datos autorizados y se implementará al conectar el servicio de datos."><span aria-hidden="true">↓</span> Exportar</button>
+    </section>
+
+    <div class="demo-notice" role="note"><span class="notice-icon" aria-hidden="true">i</span><p><strong>Datos ficticios.</strong> En producción, el acceso se limitará por perfil docente y de dirección; esta maqueta no aplica permisos.</p></div>
+
+    <section class="stat-grid stat-grid--3" aria-label="Resumen de fichas de ejemplo">
+      <article class="metric-card"><span class="metric-card__label">Fichas disponibles</span><strong class="metric-card__value">05</strong><span class="metric-card__hint">Estudiantes ficticios</span></article>
+      <article class="metric-card metric-card--accent"><span class="metric-card__label">Grupos de muestra</span><strong class="metric-card__value">03</strong><span class="metric-card__hint">Organizados por grado</span></article>
+      <article class="metric-card"><span class="metric-card__label">Año lectivo</span><strong class="metric-card__value metric-card__value--text">2026</strong><span class="metric-card__hint">Contenido ilustrativo</span></article>
+    </section>
+
+    <section class="panel student-panel" aria-labelledby="student-list-title">
+      <div class="panel-header panel-header--wrap">
+        <div><p class="eyebrow">DIRECTORIO DE DEMOSTRACIÓN</p><h2 id="student-list-title">Fichas individuales</h2><p class="panel-subtitle">Busca por código, estudiante o sección. Los registros no corresponden a personas reales.</p></div>
+        <span class="status-pill status-pill--blue">5 registros de muestra</span>
+      </div>
+      <div class="student-filters">
+        <label class="field-group field-group--search" for="student-search"><span>Buscar estudiante</span><input id="student-search" type="search" placeholder="Ej. AL-001 o 4.º A" autocomplete="off" data-student-search></label>
+        <label class="field-group" for="grade-filter"><span>Grado</span><select id="grade-filter" data-grade-filter><option value="all">Todos los grados</option><option value="4">4.º grado</option><option value="5">5.º grado</option><option value="6">6.º grado</option></select></label>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table student-table">
+          <caption class="visually-hidden">Directorio ficticio de estudiantes para probar la búsqueda y el filtro por grado</caption>
+          <thead><tr><th scope="col">Estudiante</th><th scope="col">Grado / sección</th><th scope="col">Promedio demo</th><th scope="col">Seguimiento</th><th scope="col"><span class="visually-hidden">Acción</span></th></tr></thead>
+          <tbody data-student-list>
+            <tr data-student-row data-grade="4" data-search="al-001 estudiante 001 4 grado cuarto seccion a"><th scope="row"><span class="student-code">AL-001</span><span class="student-name">Estudiante 001</span></th><td>4.º A</td><td><span class="grade-mark">8.4</span></td><td><span class="status-pill status-pill--success">Al día</span></td><td><button class="button button--small button--secondary" type="button" data-demo-action="La ficha detallada estará disponible con autenticación y permisos configurados.">Ver ficha</button></td></tr>
+            <tr data-student-row data-grade="4" data-search="al-002 estudiante 002 4 grado cuarto seccion a"><th scope="row"><span class="student-code">AL-002</span><span class="student-name">Estudiante 002</span></th><td>4.º A</td><td><span class="grade-mark">8.9</span></td><td><span class="status-pill status-pill--warning">En seguimiento</span></td><td><button class="button button--small button--secondary" type="button" data-demo-action="La ficha detallada estará disponible con autenticación y permisos configurados.">Ver ficha</button></td></tr>
+            <tr data-student-row data-grade="5" data-search="al-003 estudiante 003 5 grado quinto seccion b"><th scope="row"><span class="student-code">AL-003</span><span class="student-name">Estudiante 003</span></th><td>5.º B</td><td><span class="grade-mark">7.8</span></td><td><span class="status-pill status-pill--neutral">Sin actualización</span></td><td><button class="button button--small button--secondary" type="button" data-demo-action="La ficha detallada estará disponible con autenticación y permisos configurados.">Ver ficha</button></td></tr>
+            <tr data-student-row data-grade="5" data-search="al-004 estudiante 004 5 grado quinto seccion a"><th scope="row"><span class="student-code">AL-004</span><span class="student-name">Estudiante 004</span></th><td>5.º A</td><td><span class="grade-mark">9.1</span></td><td><span class="status-pill status-pill--success">Al día</span></td><td><button class="button button--small button--secondary" type="button" data-demo-action="La ficha detallada estará disponible con autenticación y permisos configurados.">Ver ficha</button></td></tr>
+            <tr data-student-row data-grade="6" data-search="al-005 estudiante 005 6 grado sexto seccion c"><th scope="row"><span class="student-code">AL-005</span><span class="student-name">Estudiante 005</span></th><td>6.º C</td><td><span class="grade-mark">8.2</span></td><td><span class="status-pill status-pill--warning">En seguimiento</span></td><td><button class="button button--small button--secondary" type="button" data-demo-action="La ficha detallada estará disponible con autenticación y permisos configurados.">Ver ficha</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="empty-state" data-student-empty hidden>No hay coincidencias. Prueba otro código o cambia el filtro de grado.</p>
+      <div class="privacy-note"><span class="privacy-note__icon" aria-hidden="true">⌑</span><p><strong>Privacidad por diseño.</strong> Antes de cargar información real de estudiantes, se deben configurar autenticación, reglas de acceso y protección de datos locales.</p></div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="shell site-footer__inner"><span>Gestión Escolar · Prototipo de interfaz</span><span>Contenido ilustrativo · No usar para datos reales</span></div></footer>
+  <script type="module" src="./nav.js"></script>
+  <script type="module" src="./fichas.js"></script>
+</body>
+</html>

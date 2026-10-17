@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1e3d63">
+  <meta name="description" content="Vista de demostración para la gestión y consulta de notas escolares.">
+  <title>Gestión de notas | Gestión Escolar</title>
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="./logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./base.css">
+  <link rel="stylesheet" href="./layout.css">
+  <link rel="stylesheet" href="./componentes.css">
+</head>
+<body data-page="notas">
+  <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+  <header class="site-header">
+    <div class="shell site-header__top">
+      <a class="brand" href="./index.html" aria-label="Gestión Escolar, inicio"><img class="brand__logo" src="./logo.svg" width="44" height="44" alt=""><span class="brand__text"><strong>Gestión Escolar</strong><small>Portal institucional</small></span></a>
+      <div class="site-header__actions">
+        <div class="connection-pill" title="Estado de conexión a internet; no indica sincronización con Firebase." aria-live="polite"><span class="connection-pill__dot" aria-hidden="true"></span><span data-connection-label>Comprobando conexión</span></div>
+        <span class="pending-count" data-pending-count hidden></span>
+        <div class="user-chip" aria-label="Sesión de demostración"><span class="user-avatar" aria-hidden="true">DE</span><span class="user-chip__text"><strong>Demo escolar</strong><small>Vista de demostración</small></span></div>
+      </div>
+    </div>
+    <nav class="primary-nav" aria-label="Navegación principal"><div class="shell primary-nav__inner">
+      <a class="nav-link" data-nav="aportes" href="./aportes.html"><img src="./icono-aportes.svg" alt="" width="19" height="19"><span>Aportes y reportes</span></a>
+      <a class="nav-link" data-nav="notas" href="./notas.html"><img src="./icono-notas.svg" alt="" width="19" height="19"><span>Gestión de notas</span></a>
+      <a class="nav-link" data-nav="horarios" href="./horarios.html"><img src="./icono-horarios.svg" alt="" width="19" height="19"><span>Horarios y agenda</span></a>
+      <a class="nav-link" data-nav="fichas" href="./fichas.html"><img src="./icono-fichas.svg" alt="" width="19" height="19"><span>Fichas estudiantiles</span></a>
+    </div></nav>
+  </header>
+
+  <main class="page-main shell" id="main-content">
+    <section class="page-hero" aria-labelledby="page-title">
+      <div class="page-heading"><p class="eyebrow">GESTIÓN ACADÉMICA <span class="eyebrow__divider">/</span> 02</p><h1 id="page-title">Gestión de notas</h1><p class="page-description">Consulta de calificaciones por grupo y período, con el estado de cierre visible para el personal docente.</p></div>
+      <div class="page-actions"><button class="button button--primary" type="button" data-demo-action="El guardado de notas estará disponible cuando se conecte una cuenta docente autorizada.">Guardar borrador</button></div>
+    </section>
+
+    <div class="demo-notice" role="note"><span class="notice-icon" aria-hidden="true">i</span><p><strong>Modo demostración.</strong> Las calificaciones son ficticias, no se editan y no se guardan en ningún servicio.</p></div>
+
+    <section class="stat-grid" aria-label="Resumen del grupo de ejemplo">
+      <article class="metric-card"><span class="metric-card__label">Grupo</span><strong class="metric-card__value metric-card__value--text">5.º A</strong><span class="metric-card__hint">Sección de muestra</span></article>
+      <article class="metric-card"><span class="metric-card__label">Estudiantes</span><strong class="metric-card__value">05</strong><span class="metric-card__hint">Filas ilustrativas</span></article>
+      <article class="metric-card metric-card--accent"><span class="metric-card__label">Promedio del grupo</span><strong class="metric-card__value" data-class-average>—</strong><span class="metric-card__hint">Calculado con datos de ejemplo</span></article>
+      <article class="metric-card"><span class="metric-card__label">Período</span><strong class="metric-card__value metric-card__value--text">2.º</strong><span class="metric-card__hint">Estado abierto · demostración</span></article>
+    </section>
+
+    <section class="panel grades-panel" aria-labelledby="grades-title">
+      <div class="panel-header panel-header--wrap">
+        <div><p class="eyebrow">MATEMÁTICA · 2.º PERÍODO</p><h2 id="grades-title">Calificaciones del grupo</h2><p class="panel-subtitle">Ejemplo de tabla docente. Los nombres se sustituyeron por códigos ficticios.</p></div>
+        <span class="status-pill status-pill--success"><span class="status-dot status-dot--green" aria-hidden="true"></span> Período abierto · demo</span>
+      </div>
+      <div class="table-toolbar"><p><strong>Escala de referencia:</strong> 0.0 a 10.0</p><span>Actualizado: 16 oct 2026 · ejemplo</span></div>
+      <div class="table-wrap">
+        <table class="data-table grades-table">
+          <caption class="visually-hidden">Calificaciones ficticias de cinco estudiantes de ejemplo</caption>
+          <thead><tr><th scope="col">Estudiante</th><th scope="col">Actividad 1</th><th scope="col">Actividad 2</th><th scope="col">Actividad 3</th><th scope="col">Promedio</th></tr></thead>
+          <tbody>
+            <tr data-grade-row data-grades="8.5,7.8,9.0"><th scope="row"><span class="student-code">AL-001</span><span class="student-name">Estudiante 001</span></th><td>8.5</td><td>7.8</td><td>9.0</td><td class="grade-average" data-grade-average>—</td></tr>
+            <tr data-grade-row data-grades="9.2,8.7,8.9"><th scope="row"><span class="student-code">AL-002</span><span class="student-name">Estudiante 002</span></th><td>9.2</td><td>8.7</td><td>8.9</td><td class="grade-average" data-grade-average>—</td></tr>
+            <tr data-grade-row data-grades="7.6,8.1,7.9"><th scope="row"><span class="student-code">AL-003</span><span class="student-name">Estudiante 003</span></th><td>7.6</td><td>8.1</td><td>7.9</td><td class="grade-average" data-grade-average>—</td></tr>
+            <tr data-grade-row data-grades="8.8,9.1,8.4"><th scope="row"><span class="student-code">AL-004</span><span class="student-name">Estudiante 004</span></th><td>8.8</td><td>9.1</td><td>8.4</td><td class="grade-average" data-grade-average>—</td></tr>
+            <tr data-grade-row data-grades="7.9,8.3,8.6"><th scope="row"><span class="student-code">AL-005</span><span class="student-name">Estudiante 005</span></th><td>7.9</td><td>8.3</td><td>8.6</td><td class="grade-average" data-grade-average>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="info-callout" aria-labelledby="lock-title">
+      <span class="info-callout__icon" aria-hidden="true">⌑</span>
+      <div class="info-callout__copy"><h2 id="lock-title">Cierre y correcciones</h2><p>El cierre automático dependerá de las fechas que configure dirección. Una vez cerrado un período, cualquier cambio deberá pasar por autorización de dirección y un informe formal.</p></div>
+      <button class="button button--secondary" type="button" data-demo-action="La solicitud formal se habilitará con perfiles, auditoría y permisos de dirección configurados.">Solicitar autorización</button>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="shell site-footer__inner"><span>Gestión Escolar · Prototipo de interfaz</span><span>Contenido ilustrativo · No usar para datos reales</span></div></footer>
+  <script type="module" src="./nav.js"></script>
+  <script type="module" src="./notas.js"></script>
+</body>
+</html>

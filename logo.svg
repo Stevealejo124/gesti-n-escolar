@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">Marca de Gestión Escolar</title>
+  <desc id="desc">Libro abierto dentro de un emblema azul con acento ocre.</desc>
+  <rect x="2" y="2" width="60" height="60" rx="18" fill="#1e3d63"/>
+  <path d="M32 19.5c-6.8-4-13.6-4.8-21-2.5v25.1c7.4-2.2 14.2-1.4 21 2.6 6.8-4 13.6-4.8 21-2.6V17c-7.4-2.3-14.2-1.5-21 2.5Z" fill="#fff"/>
+  <path d="M32 20v24.7M16.8 24.3c4.3-.8 8.2-.3 11.5 1.5M16.8 31c4.3-.8 8.2-.3 11.5 1.5M47.2 24.3c-4.3-.8-8.2-.3-11.5 1.5M47.2 31c-4.3-.8-8.2-.3-11.5 1.5" fill="none" stroke="#315b83" stroke-width="2.3" stroke-linecap="round"/>
+  <circle cx="49" cy="14" r="5" fill="#f5cd6c"/>
+</svg>

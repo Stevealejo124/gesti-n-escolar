@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1e3d63">
+  <meta name="description" content="Vista de demostración del horario docente y agenda de eventos escolares.">
+  <title>Horarios y agenda | Gestión Escolar</title>
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="./logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./base.css">
+  <link rel="stylesheet" href="./layout.css">
+  <link rel="stylesheet" href="./componentes.css">
+</head>
+<body data-page="horarios">
+  <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+  <header class="site-header">
+    <div class="shell site-header__top">
+      <a class="brand" href="./index.html" aria-label="Gestión Escolar, inicio"><img class="brand__logo" src="./logo.svg" width="44" height="44" alt=""><span class="brand__text"><strong>Gestión Escolar</strong><small>Portal institucional</small></span></a>
+      <div class="site-header__actions">
+        <div class="connection-pill" title="Estado de conexión a internet; no indica sincronización con Firebase." aria-live="polite"><span class="connection-pill__dot" aria-hidden="true"></span><span data-connection-label>Comprobando conexión</span></div>
+        <span class="pending-count" data-pending-count hidden></span>
+        <div class="user-chip" aria-label="Sesión de demostración"><span class="user-avatar" aria-hidden="true">DE</span><span class="user-chip__text"><strong>Demo escolar</strong><small>Vista de demostración</small></span></div>
+      </div>
+    </div>
+    <nav class="primary-nav" aria-label="Navegación principal"><div class="shell primary-nav__inner">
+      <a class="nav-link" data-nav="aportes" href="./aportes.html"><img src="./icono-aportes.svg" alt="" width="19" height="19"><span>Aportes y reportes</span></a>
+      <a class="nav-link" data-nav="notas" href="./notas.html"><img src="./icono-notas.svg" alt="" width="19" height="19"><span>Gestión de notas</span></a>
+      <a class="nav-link" data-nav="horarios" href="./horarios.html"><img src="./icono-horarios.svg" alt="" width="19" height="19"><span>Horarios y agenda</span></a>
+      <a class="nav-link" data-nav="fichas" href="./fichas.html"><img src="./icono-fichas.svg" alt="" width="19" height="19"><span>Fichas estudiantiles</span></a>
+    </div></nav>
+  </header>
+
+  <main class="page-main shell" id="main-content">
+    <section class="page-hero" aria-labelledby="page-title">
+      <div class="page-heading"><p class="eyebrow">ORGANIZACIÓN DOCENTE <span class="eyebrow__divider">/</span> 03</p><h1 id="page-title">Horarios y agenda</h1><p class="page-description">Consulta en un mismo espacio el horario individual y las reuniones o eventos institucionales.</p></div>
+      <span class="access-tag"><span class="access-tag__dot" aria-hidden="true"></span> Sección privada docente en producción</span>
+    </section>
+
+    <div class="demo-notice" role="note"><span class="notice-icon" aria-hidden="true">i</span><p><strong>Horario de ejemplo.</strong> No representa la agenda real de la institución ni un perfil autenticado.</p></div>
+
+    <div class="schedule-layout">
+      <section class="panel schedule-board" data-schedule-board data-view="week" aria-labelledby="schedule-title">
+        <div class="panel-header panel-header--schedule">
+          <div><p class="eyebrow">HORARIO INDIVIDUAL · DEMO</p><h2 id="schedule-title">Semana del 12 al 16 de octubre</h2><p class="panel-subtitle" data-view-caption>Vista semanal · horarios ilustrativos</p></div>
+          <div class="view-switch" role="group" aria-label="Cambiar vista del calendario">
+            <button type="button" data-view-button="day" aria-pressed="false">Día</button>
+            <button type="button" data-view-button="week" aria-pressed="true" class="is-active">Semana</button>
+            <button type="button" data-view-button="month" aria-pressed="false">Mes</button>
+            <button type="button" data-view-button="quarter" aria-pressed="false">Trimestre</button>
+          </div>
+        </div>
+        <div class="table-wrap schedule-table-wrap" data-week-grid>
+          <table class="schedule-table" aria-label="Horario semanal ficticio">
+            <thead><tr><th scope="col">Hora</th><th scope="col" data-day="lunes">Lun <time datetime="2026-10-12">12</time></th><th scope="col" data-day="martes">Mar <time datetime="2026-10-13">13</time></th><th scope="col" data-day="miercoles">Mié <time datetime="2026-10-14">14</time></th><th scope="col" data-day="jueves">Jue <time datetime="2026-10-15">15</time></th><th scope="col" data-day="viernes">Vie <time datetime="2026-10-16">16</time></th></tr></thead>
+            <tbody>
+              <tr><th scope="row">7:30–8:15</th><td data-day="lunes"><span class="class-block class-block--blue">Lenguaje<small>2.º A</small></span></td><td data-day="martes"><span class="class-block class-block--gold">Matemática<small>4.º B</small></span></td><td data-day="miercoles"><span class="class-block class-block--blue">Lenguaje<small>2.º A</small></span></td><td data-day="jueves"><span class="class-block class-block--green">Ciencias<small>5.º A</small></span></td><td data-day="viernes"><span class="class-block class-block--blue">Lenguaje<small>2.º A</small></span></td></tr>
+              <tr><th scope="row">8:30–9:15</th><td data-day="lunes"><span class="class-block class-block--gold">Matemática<small>4.º B</small></span></td><td data-day="martes"><span class="class-block class-block--blue">Lenguaje<small>2.º A</small></span></td><td data-day="miercoles"><span class="class-block class-block--gold">Matemática<small>4.º B</small></span></td><td data-day="jueves"><span class="class-block class-block--blue">Lenguaje<small>2.º A</small></span></td><td data-day="viernes"><span class="class-block class-block--gold">Matemática<small>4.º B</small></span></td></tr>
+              <tr><th scope="row">9:30–10:15</th><td data-day="lunes"><span class="class-block class-block--green">Ciencias<small>5.º A</small></span></td><td data-day="martes"><span class="class-block class-block--green">Ciencias<small>5.º A</small></span></td><td data-day="miercoles"><span class="class-block class-block--neutral">Planificación<small>Equipo docente</small></span></td><td data-day="jueves"><span class="class-block class-block--gold">Matemática<small>4.º B</small></span></td><td data-day="viernes"><span class="class-block class-block--neutral">Reunión de ciclo<small>Sala docente</small></span></td></tr>
+              <tr><th scope="row">10:30–11:15</th><td data-day="lunes"><span class="class-block class-block--blue">Lenguaje<small>2.º A</small></span></td><td data-day="martes"><span class="class-block class-block--neutral">Atención a familias<small>Espacio de consulta</small></span></td><td data-day="miercoles"><span class="class-block class-block--green">Ciencias<small>5.º A</small></span></td><td data-day="jueves"><span class="class-block class-block--blue">Lenguaje<small>2.º A</small></span></td><td data-day="viernes"><span class="class-block class-block--green">Ciencias<small>5.º A</small></span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="calendar-overview" data-agenda-overview hidden>
+          <div class="calendar-overview__intro"><span class="calendar-overview__icon" aria-hidden="true">▦</span><div><h3 data-overview-title>Agenda institucional</h3><p>Eventos ilustrativos visibles en el período seleccionado.</p></div></div>
+          <ul class="event-list">
+            <li><time datetime="2026-10-19"><strong>19</strong><span>OCT</span></time><div><strong>Reunión de coordinación</strong><span>2:30 p. m. · Sala docente</span></div><span class="event-tag">Reunión</span></li>
+            <li><time datetime="2026-10-23"><strong>23</strong><span>OCT</span></time><div><strong>Jornada de lectura</strong><span>8:00 a. m. · Patio central</span></div><span class="event-tag event-tag--gold">Actividad</span></li>
+            <li><time datetime="2026-11-02"><strong>02</strong><span>NOV</span></time><div><strong>Consejo académico</strong><span>1:30 p. m. · Sala de reuniones</span></div><span class="event-tag">Reunión</span></li>
+          </ul>
+        </div>
+        <p class="table-footnote">La agenda real será privada y se mostrará según la cuenta docente autenticada.</p>
+      </section>
+
+      <aside class="panel agenda-side" aria-labelledby="upcoming-title">
+        <div class="panel-header"><div><p class="eyebrow">PRÓXIMAMENTE</p><h2 id="upcoming-title">Agenda escolar</h2></div><span class="agenda-side__calendar" aria-hidden="true">▦</span></div>
+        <article class="agenda-event"><div class="agenda-event__date"><strong>19</strong><span>OCT</span></div><div><strong>Coordinación docente</strong><p>Lunes · 2:30 p. m.</p><span class="category-label">Reunión</span></div></article>
+        <article class="agenda-event"><div class="agenda-event__date agenda-event__date--gold"><strong>23</strong><span>OCT</span></div><div><strong>Jornada de lectura</strong><p>Viernes · 8:00 a. m.</p><span class="category-label">Actividad escolar</span></div></article>
+        <div class="agenda-side__note"><strong>Vistas disponibles</strong><span>Día, semana, mes y trimestre. Los datos de agenda son solo de muestra.</span></div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer"><div class="shell site-footer__inner"><span>Gestión Escolar · Prototipo de interfaz</span><span>Contenido ilustrativo · No usar para datos reales</span></div></footer>
+  <script type="module" src="./nav.js"></script>
+  <script type="module" src="./horarios.js"></script>
+</body>
+</html>

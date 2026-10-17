@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1e3d63">
+  <meta name="description" content="Aportes y reportes escolares: actividades, seguimiento y comunicaciones institucionales.">
+  <title>Aportes y reportes | Gestión Escolar</title>
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="./logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./base.css">
+  <link rel="stylesheet" href="./layout.css">
+  <link rel="stylesheet" href="./componentes.css">
+</head>
+<body data-page="aportes">
+  <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+  <header class="site-header">
+    <div class="shell site-header__top">
+      <a class="brand" href="./index.html" aria-label="Gestión Escolar, inicio"><img class="brand__logo" src="./logo.svg" width="44" height="44" alt=""><span class="brand__text"><strong>Gestión Escolar</strong><small>Portal institucional</small></span></a>
+      <div class="site-header__actions">
+        <div class="connection-pill" title="Estado de conexión a internet; no indica sincronización con Firebase." aria-live="polite"><span class="connection-pill__dot" aria-hidden="true"></span><span data-connection-label>Comprobando conexión</span></div>
+        <span class="pending-count" data-pending-count hidden></span>
+        <div class="user-chip" aria-label="Sesión de demostración"><span class="user-avatar" aria-hidden="true">DE</span><span class="user-chip__text"><strong>Demo escolar</strong><small>Vista de demostración</small></span></div>
+      </div>
+    </div>
+    <nav class="primary-nav" aria-label="Navegación principal"><div class="shell primary-nav__inner">
+      <a class="nav-link" data-nav="aportes" href="./aportes.html"><img src="./icono-aportes.svg" alt="" width="19" height="19"><span>Aportes y reportes</span></a>
+      <a class="nav-link" data-nav="notas" href="./notas.html"><img src="./icono-notas.svg" alt="" width="19" height="19"><span>Gestión de notas</span></a>
+      <a class="nav-link" data-nav="horarios" href="./horarios.html"><img src="./icono-horarios.svg" alt="" width="19" height="19"><span>Horarios y agenda</span></a>
+      <a class="nav-link" data-nav="fichas" href="./fichas.html"><img src="./icono-fichas.svg" alt="" width="19" height="19"><span>Fichas estudiantiles</span></a>
+    </div></nav>
+  </header>
+
+  <main class="page-main shell" id="main-content">
+    <section class="page-hero" aria-labelledby="page-title">
+      <div class="page-heading"><p class="eyebrow">GESTIÓN INSTITUCIONAL <span class="eyebrow__divider">/</span> 01</p><h1 id="page-title">Aportes y reportes</h1><p class="page-description">Un canal ordenado para documentar actividades, situaciones de convivencia y comunicaciones dirigidas a la comunidad escolar.</p></div>
+      <div class="page-actions"><button class="button button--primary" type="button" data-demo-action="La creación y el envío de reportes se habilitarán al integrar autenticación y permisos."><span aria-hidden="true">＋</span> Nuevo reporte</button></div>
+    </section>
+
+    <div class="demo-notice" role="note"><span class="notice-icon" aria-hidden="true">i</span><p><strong>Modo demostración.</strong> Los registros son ficticios; aquí no se guarda ni se envía información.</p></div>
+
+    <section class="stat-grid stat-grid--3" aria-label="Resumen de reportes de ejemplo">
+      <article class="metric-card"><span class="metric-card__label">Reportes del período</span><strong class="metric-card__value">03</strong><span class="metric-card__hint">Registros de muestra</span></article>
+      <article class="metric-card metric-card--accent"><span class="metric-card__label">En revisión</span><strong class="metric-card__value">02</strong><span class="metric-card__hint">Requieren seguimiento</span></article>
+      <article class="metric-card"><span class="metric-card__label">Enviados</span><strong class="metric-card__value">01</strong><span class="metric-card__hint">Visibles para dirección</span></article>
+    </section>
+
+    <section class="panel report-panel" aria-labelledby="report-list-title">
+      <div class="panel-header">
+        <div><p class="eyebrow">REGISTRO RECIENTE</p><h2 id="report-list-title">Reportes de demostración</h2><p class="panel-subtitle">Ejemplos para validar filtros y jerarquía visual.</p></div>
+        <span class="status-pill status-pill--blue">3 registros</span>
+      </div>
+      <div class="filter-bar" role="group" aria-label="Filtrar reportes por categoría">
+        <button class="filter-button is-active" type="button" data-filter="all" aria-pressed="true">Todos <span>3</span></button>
+        <button class="filter-button" type="button" data-filter="actividad" aria-pressed="false">Actividades</button>
+        <button class="filter-button" type="button" data-filter="convivencia" aria-pressed="false">Convivencia</button>
+        <button class="filter-button" type="button" data-filter="academico" aria-pressed="false">Académicos</button>
+      </div>
+      <div class="report-list" data-report-list>
+        <article class="report-row" data-report-card data-category="actividad">
+          <span class="report-row__marker report-row__marker--gold" aria-hidden="true"></span>
+          <div class="report-row__body"><div class="report-row__top"><span class="category-label">Actividad escolar</span><span class="status-pill status-pill--warning">En revisión</span></div><h3>Jornada de lectura colaborativa</h3><p>Actividad de aula · 3.er grado · Registro demostrativo</p><div class="report-row__meta"><span>Publicado por Docente de ejemplo</span><time datetime="2026-10-14">14 oct 2026</time></div></div>
+          <button class="icon-button" type="button" aria-label="Ver detalle de jornada de lectura" data-demo-action="El detalle del reporte estará disponible cuando exista acceso autenticado.">→</button>
+        </article>
+        <article class="report-row" data-report-card data-category="convivencia">
+          <span class="report-row__marker report-row__marker--blue" aria-hidden="true"></span>
+          <div class="report-row__body"><div class="report-row__top"><span class="category-label">Convivencia</span><span class="status-pill status-pill--neutral">Borrador</span></div><h3>Seguimiento de convivencia</h3><p>Nota de seguimiento · Registro completamente ficticio</p><div class="report-row__meta"><span>Visible solo en esta maqueta</span><time datetime="2026-10-13">13 oct 2026</time></div></div>
+          <button class="icon-button" type="button" aria-label="Ver detalle de seguimiento de convivencia" data-demo-action="El detalle del reporte estará disponible cuando exista acceso autenticado.">→</button>
+        </article>
+        <article class="report-row" data-report-card data-category="academico">
+          <span class="report-row__marker report-row__marker--green" aria-hidden="true"></span>
+          <div class="report-row__body"><div class="report-row__top"><span class="category-label">Académico</span><span class="status-pill status-pill--success">Enviado</span></div><h3>Avance de proyecto de aula</h3><p>Resumen académico · Sección de muestra · Sin datos de estudiantes</p><div class="report-row__meta"><span>Enviado a dirección</span><time datetime="2026-10-10">10 oct 2026</time></div></div>
+          <button class="icon-button" type="button" aria-label="Ver detalle de avance de proyecto" data-demo-action="El detalle del reporte estará disponible cuando exista acceso autenticado.">→</button>
+        </article>
+      </div>
+      <p class="empty-state" data-report-empty hidden>No hay reportes en esta categoría.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="shell site-footer__inner"><span>Gestión Escolar · Prototipo de interfaz</span><span>Contenido ilustrativo · No usar para datos reales</span></div></footer>
+  <script type="module" src="./nav.js"></script>
+  <script type="module" src="./aportes.js"></script>
+</body>
+</html>
