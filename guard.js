@@ -1,14 +1,12 @@
+import { applyRoleNavigation, canAccessPage, renderAuthenticatedUser } from "./nav.js";
+
 const protectedContent = document.querySelector("[data-protected-content]");
 const gate = document.querySelector("[data-auth-gate]");
 const gateTitle = document.querySelector("[data-auth-gate-title]");
 const gateDetail = document.querySelector("[data-auth-gate-detail]");
 const gateLink = document.querySelector("[data-auth-gate-link]");
 const pageName = document.body.dataset.page;
-const allowedRoles = (document.body.dataset.allowedRoles || "")
-  .split(",")
-  .map((role) => role.trim())
-  .filter(Boolean);
-const supervisors = new Set(["director", "subdirectora"]);
+const supervisors = new Set(["direccion", "admin"]);
 
 function setGate(title, detail, linkHref = "./index.html", linkText = "Volver al inicio de sesión") {
   if (protectedContent) protectedContent.hidden = true;
@@ -20,36 +18,6 @@ function setGate(title, detail, linkHref = "./index.html", linkText = "Volver al
     gateLink.textContent = linkText;
     gateLink.hidden = false;
   }
-}
-
-function userInitials(value) {
-  const parts = String(value || "").trim().split(/\s+/).filter(Boolean);
-  return parts.slice(0, 2).map((part) => part[0]).join("").toLocaleUpperCase("es") || "GE";
-}
-
-function renderUser(profile) {
-  const name = profile.displayName.trim();
-  const initials = document.querySelector("[data-user-initials]");
-  const nameNode = document.querySelector("[data-user-name]");
-  const roleNode = document.querySelector("[data-user-role]");
-  if (initials) initials.textContent = userInitials(name);
-  if (nameNode) nameNode.textContent = name;
-  if (roleNode) roleNode.textContent = profile.role === "docente"
-    ? "Docente"
-    : profile.role === "director" ? "Dirección · Director" : "Dirección · Subdirectora";
-}
-
-function applyRoleNavigation(role) {
-  const permissions = {
-    aportes: ["docente", "director", "subdirectora"],
-    notas: ["docente", "director", "subdirectora"],
-    horarios: ["docente"],
-    fichas: ["docente", "director", "subdirectora"]
-  };
-  document.querySelectorAll(".nav-link[data-nav]").forEach((link) => {
-    const roles = permissions[link.dataset.nav] || [];
-    link.hidden = !roles.includes(role);
-  });
 }
 
 function formatDate(timestamp) {
@@ -127,7 +95,7 @@ async function startGuard() {
       return;
     }
 
-    if (!allowedRoles.includes(profile.role)) {
+    if (!canAccessPage(pageName, profile.rol)) {
       setGate(
         "Tu perfil no tiene acceso a esta sección.",
         "Los horarios individuales son privados para el perfil docente. Puedes volver a una sección autorizada.",
@@ -137,8 +105,8 @@ async function startGuard() {
       return;
     }
 
-    renderUser(profile);
-    applyRoleNavigation(profile.role);
+    renderAuthenticatedUser(profile, authApi.roleLabel);
+    applyRoleNavigation(profile.rol);
     protectedContent.hidden = false;
     gate.hidden = true;
 
@@ -164,7 +132,7 @@ async function startGuard() {
     catch (error) { console.warn("No se pudo registrar la consulta de sección.", error); }
 
     const activityPanel = document.querySelector("[data-supervisor-activity]");
-    const canReviewActivity = Boolean(activityPanel && supervisors.has(profile.role));
+    const canReviewActivity = Boolean(activityPanel && supervisors.has(profile.rol));
     if (canReviewActivity) await renderSupervisorActivity(logsApi);
     window.addEventListener("online", async () => {
       try { await logsApi.syncPendingLogs(); }

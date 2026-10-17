@@ -61,25 +61,25 @@ La configuración web del proyecto ya está escrita en `firebase-config.js`, con
 3. Crea la base de datos de **Cloud Firestore**.
 4. En **Firestore → Rules**, copia el contenido de `firestore.rules` y pulsa **Publish**. GitHub Pages no despliega reglas de Firebase automáticamente.
 5. Crea cada cuenta en **Authentication → Users → Add user**. No hay registro público en el sitio.
-6. Copia el UID de cada cuenta y crea en Firestore el documento `users/{UID}` con estos campos:
+6. Copia el UID de cada cuenta y crea en Firestore el documento `usuarios/{UID}` con estos campos:
 
    ```json
    {
-     "displayName": "Nombre del personal",
+     "nombre": "Nombre del personal",
      "email": "persona@institucion.edu.sv",
-     "role": "docente",
-     "active": true
+     "rol": "docente",
+     "activo": true
    }
    ```
 
-   Valores permitidos para `role`: `docente`, `director` o `subdirectora`. El documento debe tener `displayName` no vacío y `active: true`. El perfil y los roles solo se modifican desde una herramienta administrativa confiable/Console; el cliente web no puede escribirlos.
+   Valores permitidos para `rol`: `docente`, `direccion` o `admin`. El documento debe tener `nombre` no vacío y `activo: true`. El perfil y los roles solo se modifican desde una herramienta administrativa confiable/Console; el cliente web no puede escribirlos.
 
 ## Qué queda implementado
 
 - Inicio y cierre de sesión mediante Firebase Authentication con correo y contraseña; formulario de restablecimiento de contraseña.
 - Guardas en las cuatro páginas: requieren sesión y perfil Firestore activo. Si Firebase o Firestore no pueden validar el perfil, el contenido protegido permanece oculto.
-- Permisos de interfaz por rol. `horarios.html` queda limitado a `docente`; dirección y subdirección pueden consultar las demás secciones.
-- Perfiles en `users/{uid}` y registro de acciones en `activityLogs/{id}`. El registro incluye actor, tipo, sección y hora de servidor. Dirección/subdirección ve la actividad general dentro de Fichas; cada docente solo puede leer la propia.
+- Permisos de interfaz por rol. `horarios.html` queda limitado a `docente`; dirección y administración pueden consultar las demás secciones.
+- Perfiles en `usuarios/{uid}` y registro de acciones en `activityLogs/{id}`. El registro incluye actor, tipo, sección y hora de servidor. Dirección/admin ve la actividad general dentro de Fichas; cada docente solo puede leer la propia.
 - Reglas con denegación por defecto para cualquier colección no definida. Las funciones de notas, fichas y reportes aún muestran contenido ficticio y no escriben esos datos en Firestore.
 - Los eventos de actividad pueden quedar en IndexedDB si se pierde la conexión y se intentan enviar al reconectar. La autenticación y la consulta de perfiles requieren conexión a Firebase; el sitio falla de forma cerrada y no muestra contenido protegido si no puede validar permisos.
 

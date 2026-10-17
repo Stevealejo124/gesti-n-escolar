@@ -17,7 +17,7 @@ import { app } from "./firebase-config.js";
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 
-const VALID_ROLES = new Set(["docente", "director", "subdirectora"]);
+const VALID_ROLES = new Set(["docente", "direccion", "admin"]);
 let persistencePromise;
 
 function ensurePersistence() {
@@ -61,27 +61,25 @@ export async function waitForAuthState() {
 
 export async function getUserProfile(uid) {
   if (!uid) return null;
-  const snapshot = await getDoc(doc(db, "users", uid));
+  const snapshot = await getDoc(doc(db, "usuarios", uid));
   return snapshot.exists() ? { ...snapshot.data(), uid: snapshot.id } : null;
 }
 
 export function isActiveProfile(profile) {
   return Boolean(
     profile
-    && profile.active === true
-    && VALID_ROLES.has(profile.role)
-    && typeof profile.displayName === "string"
-    && profile.displayName.trim().length > 0
-    && profile.displayName === profile.displayName.trim()
-    && profile.displayName.length <= 80
+    && profile.activo === true
+    && VALID_ROLES.has(profile.rol)
+    && typeof profile.nombre === "string"
+    && profile.nombre.trim().length > 0
   );
 }
 
-export function roleLabel(role) {
+export function roleLabel(rol) {
   const labels = {
     docente: "Docente",
-    director: "Dirección · Director",
-    subdirectora: "Dirección · Subdirectora"
+    direccion: "Dirección",
+    admin: "Administrador"
   };
-  return labels[role] || "Perfil sin asignar";
+  return labels[rol] || "Perfil sin asignar";
 }

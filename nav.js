@@ -1,10 +1,60 @@
 import { getPendingCount } from "./offline.js";
 
+const ROLE_PERMISSIONS = Object.freeze({
+  aportes: ["docente", "direccion", "admin"],
+  notas: ["docente", "direccion", "admin"],
+  horarios: ["docente"],
+  fichas: ["docente", "direccion", "admin"]
+});
+
 const pageName = document.body.dataset.page;
 document.querySelectorAll(".nav-link[data-nav]").forEach((link) => {
   if (link.dataset.nav === pageName) link.setAttribute("aria-current", "page");
   else link.removeAttribute("aria-current");
 });
+
+function initialsFromName(nombre) {
+  return String(nombre || "")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join("")
+    .toLocaleUpperCase("es") || "GE";
+}
+
+function defaultRoleLabel(rol) {
+  const labels = {
+    docente: "Docente",
+    direccion: "Dirección",
+    admin: "Administrador"
+  };
+  return labels[rol] || "Perfil sin asignar";
+}
+
+/* Los datos del documento de Firestore se muestran con los nombres reales del esquema: nombre y rol. */
+export function renderAuthenticatedUser(user, getRoleLabel = defaultRoleLabel) {
+  const nombre = typeof user?.nombre === "string" ? user.nombre.trim() : "";
+  const rol = user?.rol;
+  const initials = document.querySelector("[data-user-initials]");
+  const nameNode = document.querySelector("[data-user-name]");
+  const roleNode = document.querySelector("[data-user-role]");
+
+  if (initials) initials.textContent = initialsFromName(nombre);
+  if (nameNode) nameNode.textContent = nombre || user?.email || "Usuario institucional";
+  if (roleNode) roleNode.textContent = getRoleLabel(rol);
+}
+
+export function canAccessPage(page, rol) {
+  return Boolean(ROLE_PERMISSIONS[page]?.includes(rol));
+}
+
+export function applyRoleNavigation(rol) {
+  document.querySelectorAll(".nav-link[data-nav]").forEach((link) => {
+    link.hidden = !canAccessPage(link.dataset.nav, rol);
+  });
+}
 
 const connectionPill = document.querySelector(".connection-pill");
 const connectionLabel = document.querySelector("[data-connection-label]");

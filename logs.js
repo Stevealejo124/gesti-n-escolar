@@ -26,11 +26,11 @@ function notifyQueueChanged() {
 function createLogPayload(type, section, profile) {
   if (!ALLOWED_TYPES.has(type)) throw new TypeError("Tipo de actividad no permitido.");
   if (!ALLOWED_SECTIONS.has(section)) throw new TypeError("Sección no permitida.");
-  if (!profile?.displayName || !auth.currentUser) throw new Error("Se requiere una sesión y un perfil activo.");
+  if (!profile?.nombre || !auth.currentUser) throw new Error("Se requiere una sesión y un perfil activo.");
 
   return {
     actorUid: auth.currentUser.uid,
-    actorName: profile.displayName,
+    actorName: profile.nombre,
     type,
     section
   };

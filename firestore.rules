@@ -6,7 +6,7 @@ service cloud.firestore {
     }
 
     function userPath(uid) {
-      return /databases/$(database)/documents/users/$(uid);
+      return /databases/$(database)/documents/usuarios/$(uid);
     }
 
     function hasProfile() {
@@ -14,19 +14,19 @@ service cloud.firestore {
     }
 
     function activeProfile() {
-      return hasProfile() && get(userPath(request.auth.uid)).data.active == true;
+      return hasProfile() && get(userPath(request.auth.uid)).data.activo == true;
     }
 
     function isSupervisor() {
       return activeProfile()
-        && get(userPath(request.auth.uid)).data.role in ['director', 'subdirectora'];
+        && get(userPath(request.auth.uid)).data.rol in ['direccion', 'admin'];
     }
 
-    match /users/{uid} {
-      // Cada persona puede leer su propio perfil; dirección puede consultar perfiles para supervisar.
+    match /usuarios/{uid} {
+      // Cada persona puede leer su propio perfil; dirección/admin pueden consultar perfiles para supervisar.
       allow get: if (signedIn() && request.auth.uid == uid) || isSupervisor();
       allow list: if isSupervisor();
-      // Roles y perfiles se provisionan desde Firebase Console o un entorno administrativo confiable.
+      // Perfiles, roles y estado se administran desde Firebase Console o un entorno administrativo confiable.
       allow create, update, delete: if false;
     }
 
@@ -36,13 +36,12 @@ service cloud.firestore {
         && request.resource.data.keys().hasOnly(['actorUid', 'actorName', 'type', 'section', 'createdAt'])
         && request.resource.data.actorUid == request.auth.uid
         && request.resource.data.actorName is string
-        && request.resource.data.actorName == get(userPath(request.auth.uid)).data.displayName
-        && request.resource.data.actorName.size() <= 80
+        && request.resource.data.actorName == get(userPath(request.auth.uid)).data.nombre
         && request.resource.data.type in ['login', 'logout', 'page_view']
         && request.resource.data.section in ['index', 'aportes', 'notas', 'horarios', 'fichas']
         && request.resource.data.createdAt == request.time;
 
-      // Dirección/subdirección ve actividad general; el resto solo sus propios registros.
+      // Dirección/admin ve actividad general; el resto solo puede leer sus propios registros.
       allow get, list: if isSupervisor()
         || (activeProfile() && resource.data.actorUid == request.auth.uid);
       allow update, delete: if false;
