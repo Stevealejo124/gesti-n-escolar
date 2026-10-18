@@ -17,37 +17,41 @@ service cloud.firestore {
       return hasProfile() && get(userPath(request.auth.uid)).data.activo == true;
     }
 
-    function isSupervisor() {
+    function isManagement() {
       return activeProfile()
         && get(userPath(request.auth.uid)).data.rol in ['direccion', 'admin'];
     }
 
     match /usuarios/{uid} {
-      // Cada persona puede leer su propio perfil; dirección/admin pueden consultar perfiles para supervisar.
-      allow get: if (signedIn() && request.auth.uid == uid) || isSupervisor();
-      allow list: if isSupervisor();
-      // Perfiles, roles y estado se administran desde Firebase Console o un entorno administrativo confiable.
-      allow create, update, delete: if false;
+      // La lectura propia no depende de consultas adicionales a reglas de dirección.
+      allow get: if signedIn() && request.auth.uid == uid;
+      allow list: if isManagement();
+      allow create, update, delete: if activeProfile()
+        && get(userPath(request.auth.uid)).data.rol == 'admin';
     }
 
-    match /activityLogs/{logId} {
+    match /logs/{logId} {
       allow create: if activeProfile()
-        && request.resource.data.keys().hasAll(['actorUid', 'actorName', 'type', 'section', 'createdAt'])
-        && request.resource.data.keys().hasOnly(['actorUid', 'actorName', 'type', 'section', 'createdAt'])
+        && request.resource.data.keys().hasAll([
+          'actorUid', 'actorName', 'type', 'section', 'createdAt'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'actorUid', 'actorName', 'type', 'section', 'createdAt'
+        ])
         && request.resource.data.actorUid == request.auth.uid
         && request.resource.data.actorName is string
-        && request.resource.data.actorName == get(userPath(request.auth.uid)).data.nombre
+        && request.resource.data.actorName
+          == get(userPath(request.auth.uid)).data.nombre
         && request.resource.data.type in ['login', 'logout', 'page_view']
-        && request.resource.data.section in ['index', 'aportes', 'notas', 'horarios', 'fichas']
+        && request.resource.data.section
+          in ['index', 'aportes', 'notas', 'horarios', 'fichas']
         && request.resource.data.createdAt == request.time;
 
-      // Dirección/admin ve actividad general; el resto solo puede leer sus propios registros.
-      allow get, list: if isSupervisor()
-        || (activeProfile() && resource.data.actorUid == request.auth.uid);
+      allow read: if isManagement();
       allow update, delete: if false;
     }
 
-    // Denegación por defecto para notas, fichas, reportes y cualquier colección no definida.
+    // Denegación por defecto para notas, fichas, reportes y colecciones no definidas.
     match /{document=**} {
       allow read, write: if false;
     }

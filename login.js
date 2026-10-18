@@ -48,7 +48,7 @@ function firebaseMessage(error) {
     "auth/user-disabled": "Esta cuenta está deshabilitada. Contacta a dirección.",
     "auth/too-many-requests": "Se realizaron demasiados intentos. Espera un momento y vuelve a intentar.",
     "auth/network-request-failed": "No se pudo conectar con Firebase. Revisa tu conexión e inténtalo de nuevo.",
-    "permission-denied": "La cuenta no tiene permisos para consultar su perfil.",
+    "permission-denied": "Firestore rechazó la lectura del perfil en usuarios/{UID}. Verifica que las reglas estén publicadas y que el documento tenga el mismo UID de Authentication.",
     "unavailable": "Firebase no está disponible en este momento. Inténtalo más tarde."
   };
   return messages[error?.code] || "No se pudo validar el acceso. Verifica la cuenta o contacta a administración.";
@@ -87,6 +87,7 @@ form?.addEventListener("submit", async (event) => {
     catch (error) { console.warn("No se pudo guardar el registro de inicio de sesión.", error); }
     window.location.replace("./aportes.html");
   } catch (error) {
+    console.error("Fallo al iniciar sesión o consultar el perfil.", error);
     showStatus(firebaseMessage(error), "error");
   } finally {
     isSubmitting = false;
@@ -131,7 +132,8 @@ async function checkExistingSession() {
     const user = await authApi.waitForAuthState();
     await continueIfSignedIn(authApi, user);
   } catch (error) {
-    showStatus("No se pudo conectar con Firebase. Revisa tu conexión y vuelve a intentarlo.", "error");
+    console.error("No se pudo comprobar la sesión o leer el perfil.", error);
+    showStatus("No se pudo comprobar la sesión. Revisa la conexión, UID del perfil y reglas publicadas.", "error");
   }
 }
 

@@ -79,7 +79,7 @@ La configuración web del proyecto ya está escrita en `firebase-config.js`, con
 - Inicio y cierre de sesión mediante Firebase Authentication con correo y contraseña; formulario de restablecimiento de contraseña.
 - Guardas en las cuatro páginas: requieren sesión y perfil Firestore activo. Si Firebase o Firestore no pueden validar el perfil, el contenido protegido permanece oculto.
 - Permisos de interfaz por rol. `horarios.html` queda limitado a `docente`; dirección y administración pueden consultar las demás secciones.
-- Perfiles en `usuarios/{uid}` y registro de acciones en `activityLogs/{id}`. El registro incluye actor, tipo, sección y hora de servidor. Dirección/admin ve la actividad general dentro de Fichas; cada docente solo puede leer la propia.
+- Perfiles en `usuarios/{uid}` y registro de acciones en `logs/{id}`. El registro incluye actor, tipo, sección y hora de servidor. Dirección/admin ve la actividad general dentro de Fichas.
 - Reglas con denegación por defecto para cualquier colección no definida. Las funciones de notas, fichas y reportes aún muestran contenido ficticio y no escriben esos datos en Firestore.
 - Los eventos de actividad pueden quedar en IndexedDB si se pierde la conexión y se intentan enviar al reconectar. La autenticación y la consulta de perfiles requieren conexión a Firebase; el sitio falla de forma cerrada y no muestra contenido protegido si no puede validar permisos.
 
@@ -90,3 +90,11 @@ La configuración web del proyecto ya está escrita en `firebase-config.js`, con
 - El log se crea desde el cliente y se hace inmutable para el cliente según Rules, pero un usuario con herramientas de navegador puede intentar emitir acciones permitidas. Para auditoría resistente a manipulación se necesita una función/backend confiable.
 - Todavía no se almacenan calificaciones, reportes ni fichas en Firestore. Antes de habilitarlos, define esquema, permisos por docente/grupo, cierres de período, autorizaciones y protección de datos locales.
 - El Service Worker guarda solo el shell estático; no cachea documentos privados de Firestore. La cola IndexedDB contiene solo metadatos de actividad (UID, nombre del personal, tipo y sección), queda sin cifrado en ese navegador y puede persistir en equipos compartidos. No introduzcas datos reales durante las pruebas de esta fase.
+
+## Si el login aún muestra el error anterior
+
+- Comprueba que la publicación de GitHub Pages incluya `auth.js`, `login.js`, `nav.js` y `sw.js` actualizados. El Service Worker ahora usa una versión de caché nueva (`gestion-escolar-flat-v3-usuarios`).
+- En Chrome, abre DevTools → **Application → Service Workers → Unregister** y **Storage → Clear site data**; luego recarga con `Ctrl+Shift+R`. También puedes borrar los datos del sitio de GitHub Pages desde la configuración del navegador.
+- En Firebase Authentication, copia el UID completo de `direccion@test.com` y verifica que coincida, carácter por carácter, con el ID del documento `usuarios/{UID}`.
+- En Firestore Rules, publica las reglas desde la consola. La lectura de perfil debe permitir `request.auth.uid == uid` en `usuarios/{uid}`.
+- Si persiste, revisa la consola del navegador: el cliente registra el código real de Firebase y la ruta `usuarios/{UID}` que intentó leer. No compartas contraseñas ni tokens.

@@ -114,7 +114,15 @@ function registerServiceWorker() {
   if (location.protocol !== "https:" && !localHttp) return;
   const workerUrl = new URL("./sw.js", import.meta.url);
   const scope = new URL("./", import.meta.url).pathname;
-  navigator.serviceWorker.register(workerUrl.href, { scope }).catch((error) => {
+  navigator.serviceWorker.register(workerUrl.href, {
+    scope,
+    updateViaCache: "none"
+  }).then((registration) => {
+    // Fuerza la comprobación para que una caché previa no conserve auth.js antiguo.
+    registration.update().catch((error) => {
+      console.info("No se pudo comprobar si hay una versión nueva del Service Worker.", error);
+    });
+  }).catch((error) => {
     console.info("El Service Worker no se pudo registrar en este entorno.", error);
   });
 }

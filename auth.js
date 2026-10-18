@@ -61,8 +61,14 @@ export async function waitForAuthState() {
 
 export async function getUserProfile(uid) {
   if (!uid) return null;
-  const snapshot = await getDoc(doc(db, "usuarios", uid));
-  return snapshot.exists() ? { ...snapshot.data(), uid: snapshot.id } : null;
+
+  try {
+    const snapshot = await getDoc(doc(db, "usuarios", uid));
+    return snapshot.exists() ? { ...snapshot.data(), uid: snapshot.id } : null;
+  } catch (error) {
+    console.error(`Firestore rechazó la lectura de usuarios/${uid}.`, error);
+    throw error;
+  }
 }
 
 export function isActiveProfile(profile) {

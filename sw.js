@@ -1,5 +1,5 @@
 /* Cache offline del shell estático. Firestore, Auth y datos de usuarios no se cachean. */
-const CACHE_NAME = 'gestion-escolar-flat-v2';
+const CACHE_NAME = 'gestion-escolar-flat-v3-usuarios';
 const STATIC_ASSETS = [
   './index.html',
   './aportes.html',
