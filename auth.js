@@ -71,14 +71,38 @@ export async function getUserProfile(uid) {
   }
 }
 
+/** Diagnóstico sin imprimir datos personales: indica qué condición del perfil no pasó. */
+export function validateUserProfile(profile) {
+  const documentExists = Boolean(profile);
+  const checks = {
+    documentExists,
+    activoIsBooleanTrue: documentExists && profile.activo === true,
+    rolIsAllowed: documentExists && VALID_ROLES.has(profile.rol),
+    nombreIsNonEmptyString: documentExists
+      && typeof profile.nombre === "string"
+      && profile.nombre.trim().length > 0
+  };
+  return { ...checks, valid: Object.values(checks).every(Boolean) };
+}
+
+export function userProfileIssue(validation) {
+  if (!validation?.documentExists) {
+    return "No se encontró el documento de perfil usuarios/{UID}. Comprueba el proyecto Firebase y el ID del documento.";
+  }
+  if (!validation.activoIsBooleanTrue) {
+    return "El perfil existe, pero el campo activo debe ser el valor booleano true.";
+  }
+  if (!validation.rolIsAllowed) {
+    return "El perfil existe, pero rol debe ser exactamente docente, direccion o admin.";
+  }
+  if (!validation.nombreIsNonEmptyString) {
+    return "El perfil existe, pero falta nombre como texto no vacío.";
+  }
+  return "El perfil no pasó la validación.";
+}
+
 export function isActiveProfile(profile) {
-  return Boolean(
-    profile
-    && profile.activo === true
-    && VALID_ROLES.has(profile.rol)
-    && typeof profile.nombre === "string"
-    && profile.nombre.trim().length > 0
-  );
+  return validateUserProfile(profile).valid;
 }
 
 export function roleLabel(rol) {

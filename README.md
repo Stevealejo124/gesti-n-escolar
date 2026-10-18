@@ -44,9 +44,9 @@ Las referencias internas usan rutas relativas `./archivo`; son compatibles con u
 ## Subir los archivos con GitHub web
 
 1. Descarga y descomprime el paquete de la Fase 2 en tu computadora.
-2. Abre la carpeta plana del proyecto y selecciona todos los archivos que están dentro. No selecciones la carpeta contenedora ni subas el ZIP sin extraer.
-3. En el repositorio de GitHub, pulsa **Add file → Upload files** y arrastra/selecciona todos los archivos juntos.
-4. Comprueba que estén directamente en la raíz del repositorio y no dentro de una subcarpeta. Pulsa **Commit changes**.
+2. Abre la carpeta plana del proyecto (31 archivos) y selecciona todos los archivos que están dentro. No selecciones la carpeta contenedora ni subas el ZIP sin extraer.
+3. En el repositorio de GitHub, pulsa **Add file → Upload files** y arrastra/selecciona los 31 archivos juntos.
+4. Comprueba que queden directamente en la raíz del repositorio, reemplazando los archivos anteriores del mismo nombre; no los pongas dentro de una subcarpeta. Pulsa **Commit changes**.
 5. En **Settings → Pages**, elige **Deploy from a branch**, selecciona la rama publicada y **/(root)**. Pulsa **Save**.
 6. Espera a que Pages publique y abre la URL que muestra GitHub.
 
@@ -93,8 +93,8 @@ La configuración web del proyecto ya está escrita en `firebase-config.js`, con
 
 ## Si el login aún muestra el error anterior
 
-- Comprueba que la publicación de GitHub Pages incluya `auth.js`, `login.js`, `nav.js` y `sw.js` actualizados. El Service Worker ahora usa una versión de caché nueva (`gestion-escolar-flat-v3-usuarios`).
-- En Chrome, abre DevTools → **Application → Service Workers → Unregister** y **Storage → Clear site data**; luego recarga con `Ctrl+Shift+R`. También puedes borrar los datos del sitio de GitHub Pages desde la configuración del navegador.
+- Comprueba que la publicación de GitHub Pages incluya `auth.js`, `login.js`, `nav.js` y `sw.js` actualizados. El Service Worker ahora usa una versión de caché nueva (`gestion-escolar-flat-v4-perfil-diagnostico`), que reemplaza la caché anterior al activarse.
+- En Chrome, abre DevTools → **Application → Service Workers → Unregister** y **Storage → Clear site data**; luego recarga con `Ctrl+Shift+R`. También puedes borrar los datos del sitio de GitHub Pages desde la configuración del navegador. Esta entrega renueva la caché a `gestion-escolar-flat-v4-perfil-diagnostico` y la activación elimina las cachés antiguas del portal.
 - En Firebase Authentication, copia el UID completo de `direccion@test.com` y verifica que coincida, carácter por carácter, con el ID del documento `usuarios/{UID}`.
 - En Firestore Rules, publica las reglas desde la consola. La lectura de perfil debe permitir `request.auth.uid == uid` en `usuarios/{uid}`.
-- Si persiste, revisa la consola del navegador: el cliente registra el código real de Firebase y la ruta `usuarios/{UID}` que intentó leer. No compartas contraseñas ni tokens.
+- Esta versión muestra cuál validación del perfil no pasó: documento inexistente, `activo` no booleano `true`, `rol` fuera de `docente`/`direccion`/`admin`, o `nombre` vacío. En DevTools → Console también aparece un diagnóstico con solo indicadores booleanos (sin imprimir nombre, email ni contraseña). Si el perfil visualmente cumple todo y sigue fallando, comparte ese diagnóstico y el mensaje exacto; no hace falta enviar credenciales.

@@ -35,8 +35,24 @@ function setBusy(busy) {
   if (resetButton) resetButton.disabled = busy;
 }
 
-function profileIsReady(profile, authApi) {
-  return authApi.isActiveProfile(profile);
+function inspectProfile(profile, authApi) {
+  if (typeof authApi.validateUserProfile === "function"
+      && typeof authApi.userProfileIssue === "function") {
+    const validation = authApi.validateUserProfile(profile);
+    return {
+      validation,
+      message: authApi.userProfileIssue(validation)
+    };
+  }
+
+  const valid = typeof authApi.isActiveProfile === "function"
+    && authApi.isActiveProfile(profile);
+  return {
+    validation: { valid, diagnosticApiPresent: false },
+    message: valid
+      ? ""
+      : "La página está combinando archivos de distintas versiones. Vuelve a subir auth.js, login.js y sw.js juntos."
+  };
 }
 
 function firebaseMessage(error) {
@@ -48,18 +64,20 @@ function firebaseMessage(error) {
     "auth/user-disabled": "Esta cuenta está deshabilitada. Contacta a dirección.",
     "auth/too-many-requests": "Se realizaron demasiados intentos. Espera un momento y vuelve a intentar.",
     "auth/network-request-failed": "No se pudo conectar con Firebase. Revisa tu conexión e inténtalo de nuevo.",
-    "permission-denied": "Firestore rechazó la lectura del perfil en usuarios/{UID}. Verifica que las reglas estén publicadas y que el documento tenga el mismo UID de Authentication.",
+    "permission-denied": "Firestore rechazó la lectura de usuarios/{UID}. Revisa las reglas publicadas y la coincidencia del proyecto.",
     "unavailable": "Firebase no está disponible en este momento. Inténtalo más tarde."
   };
-  return messages[error?.code] || "No se pudo validar el acceso. Verifica la cuenta o contacta a administración.";
+  return messages[error?.code] || "No se pudo validar el acceso. Revisa la consola del navegador para ver el diagnóstico.";
 }
 
 async function continueIfSignedIn(authApi, user) {
   if (!user) return false;
   const profile = await authApi.getUserProfile(user.uid);
-  if (!profileIsReady(profile, authApi)) {
+  const check = inspectProfile(profile, authApi);
+  if (!check.validation.valid) {
+    console.warn("Diagnóstico del perfil al restaurar sesión:", check.validation);
     await authApi.signOut();
-    showStatus("La cuenta existe, pero no tiene un perfil escolar activo. Solicita acceso a administración.", "error");
+    showStatus(check.message, "error");
     return true;
   }
   window.location.replace("./aportes.html");
@@ -77,9 +95,11 @@ form?.addEventListener("submit", async (event) => {
     const { authApi, logsApi } = await loadFirebaseModules();
     const credential = await authApi.signIn(emailInput.value, passwordInput.value);
     const profile = await authApi.getUserProfile(credential.user.uid);
-    if (!profileIsReady(profile, authApi)) {
+    const check = inspectProfile(profile, authApi);
+    if (!check.validation.valid) {
+      console.warn("Diagnóstico del perfil después del inicio de sesión:", check.validation);
       await authApi.signOut();
-      showStatus("La cuenta no tiene un perfil escolar activo. Solicita a dirección que habilite tu acceso.", "error");
+      showStatus(check.message, "error");
       return;
     }
 
@@ -133,7 +153,7 @@ async function checkExistingSession() {
     await continueIfSignedIn(authApi, user);
   } catch (error) {
     console.error("No se pudo comprobar la sesión o leer el perfil.", error);
-    showStatus("No se pudo comprobar la sesión. Revisa la conexión, UID del perfil y reglas publicadas.", "error");
+    showStatus(firebaseMessage(error), "error");
   }
 }
 
